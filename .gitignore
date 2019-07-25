@@ -2,6 +2,7 @@
 /vendor/
 /logs/*
 /cache/*
+/tmp/doctrine/*
 !/logs/README.md
 .env
 README.md

@@ -23,6 +23,8 @@ return function (App $app) {
     };
 
 
+
+    /*
     // Register Blade View helper
     $container['view'] = function ($c) {
         $settings = $c->get('settings');
@@ -31,6 +33,33 @@ return function (App $app) {
             $settings['renderer']['blade_cache_path']
         );
     };
+    */
+
+    //Register Twig Helper
+    $container['view'] = function ($container) {
+        $settings = $container->get('settings')['twig'];
+        $view = new \Slim\Views\Twig( $settings['template_path'], [
+            'cache' => $settings['cache'],
+        ]);
+
+        $view->addExtension(new \Slim\Views\TwigExtension(
+            $container->router,
+            $container->request->getUri()
+        ));
+
+        $view->getEnvironment()->addGlobal('auth', [
+            /*'check' => $container->auth->check(),
+            'user' => $container->auth->user()
+            */
+            'check' => false,
+            'user' => new \App\Domain\User()
+        ]);
+
+        $view->getEnvironment()->addGlobal('flash', $container->flash);
+
+        return $view;
+    };
+
 
     // Doctrine
     $container['em'] = function ($c) {

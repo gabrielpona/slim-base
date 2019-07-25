@@ -10,10 +10,10 @@ return [
         'displayErrorDetails' => true, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
-        // Renderer settings
-        'renderer' => [
-            'blade_template_path' => __DIR__ . '/../templates/',
-            'blade_cache_path' => __DIR__ .'/../cache/'
+        // Twig settings
+        'twig' => [
+            'template_path' => __DIR__ . '/../resources/views/',
+            'cache' => false
         ],
 
         // Monolog settings

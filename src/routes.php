@@ -29,7 +29,7 @@ return function (App $app) {
         $this->post('/auth/password/change', 'PasswordController:postChangePassword');
         $this->get('/protected',  function () {
             echo 'Página protegida';
-        });
+        })->setName('protected');
     })->add(new Middleware\AuthMiddleware($container));
 
 

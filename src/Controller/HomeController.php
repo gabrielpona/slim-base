@@ -42,7 +42,9 @@ final class HomeController {
      * @return void Response
      */
     public function index($request, $response, $args) {
-        return $this->container->view->render($response, 'home.index', ['name' => 'a']);
+        //$data = ['subscriber' => 'teste'];
+        //return $this->container->view->render($response, 'home.index', $data);
+        return $this->container->view->render($response,'index.twig');
     }
 
 }

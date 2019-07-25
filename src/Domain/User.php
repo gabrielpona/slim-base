@@ -11,12 +11,6 @@ use App\Auth\Bcrypt;
  */
 class User extends AbstractDomain
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
     /** @ORM\Column(type="string", length=100) **/
     private $username;
