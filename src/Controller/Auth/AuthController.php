@@ -93,7 +93,7 @@ class AuthController
     /**********CONTROLLER SLIMBORN*********/
 
 
-    public function getSignOut($request, $response)
+    public function postSignOut($request, $response)
     {
         $this->auth->logout();
         return $response->withRedirect($this->router->pathFor('home'));
@@ -115,14 +115,12 @@ class AuthController
         );
 
 
-
         if (! $auth) {
             $this->flash->addMessage('error', 'Beh! Could not sign you in with those details');
             return $response->withRedirect($this->router->pathFor('auth.signin'));
         }
 
-        return $response->withRedirect($this->router->pathFor('protected'));
-
+        return $response->withRedirect($this->router->pathFor('painel.index'));
 
     }
 
@@ -134,8 +132,6 @@ class AuthController
 
     public function postSignUp($request, $response)
     {
-
-
         /*
 
         $validation = $this->validator->validate($request, [
@@ -159,7 +155,6 @@ class AuthController
         $this->auth->attempt($user->email,$request->getParam('password'));
 
         */
-
         return $response->withRedirect($this->router->pathFor('home'));
     }
 

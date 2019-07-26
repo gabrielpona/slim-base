@@ -24,10 +24,19 @@ return function (App $app) {
 
 
     $app->group('', function () {
-        $this->get('/auth/signout', 'AuthController:getSignOut')->setName('auth.signout');
+        $this->post('/auth/signout', 'AuthController:postSignOut')->setName('auth.signout.post');
         $this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
         $this->post('/auth/password/change', 'PasswordController:postChangePassword');
         $this->get('/protected',  function () {
+            echo 'Página protegida';
+        })->setName('protected');
+    })->add(new Middleware\AuthMiddleware($container));
+
+
+
+    $app->group('/painel', function () {
+        $this->get('/index', 'PainelController:getIndex')->setName('painel.index');
+        $this->get('/teste',  function () {
             echo 'Página protegida';
         })->setName('protected');
     })->add(new Middleware\AuthMiddleware($container));

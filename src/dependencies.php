@@ -96,14 +96,21 @@ return function (App $app) {
         return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
     };
     */
+
+    $container['AuthController'] = function ($c) {
+        $userResource = new \App\Resource\UserResource($c->get('em'));
+        return new Controller\Auth\AuthController($c,$userResource);
+    };
+
+
     $container['HomeController'] = function ($c) {
         $fotoResource = new \App\Resource\FotoResource($c->get('em'));
         return new Controller\HomeController($c,$fotoResource);
     };
 
-    $container['AuthController'] = function ($c) {
-        $userResource = new \App\Resource\UserResource($c->get('em'));
-        return new Controller\Auth\AuthController($c,$userResource);
+    $container['PainelController'] = function ($c) {
+        //$fotoResource = new \App\Resource\FotoResource($c->get('em'));
+        return new Controller\restricted\PainelController($c);
     };
 
 
