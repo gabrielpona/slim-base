@@ -1,0 +1,51 @@
+{% extends 'templates/restrito/login.twig' %}
+{% block content %}
+<div class="login-box">
+    <div class="login-logo">
+        <a href="{{ base_url() }}"><b>Nome</b>Provisório</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+
+
+        {% if flash.getMessage('info') %}
+            <div class="alert alert-info">
+                {{ flash.getMessage('info') | first }}
+            </div>
+        {% endif %}
+
+        {% if flash.getMessage('error') %}
+            <div class="alert alert-danger">
+                {{ flash.getMessage('error') | first }}
+            </div>
+        {% endif %}
+
+        <p class="login-box-msg">Entre com seus dados para acessar</p>
+
+        <form action="{{ path_for('auth.signin.post') }}" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" placeholder="Username" name="username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="Password" name="password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <div class="social-auth-links text-center">
+        </div>
+        <a href="#">Esqueci a senha</a><br>
+        <a href="#" class="text-center">Cadastre-se</a>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+{% endblock %}

@@ -78,8 +78,9 @@ return function (App $app) {
 
 
 
-    $container['auth'] = function($container) {
-        return new \App\Controller\Auth\AuthController($container);
+    $container['auth'] = function($c) {
+        $userResource = new \App\Resource\UserResource($c->get('em'));
+        return new \App\Controller\Auth\AuthController($c,$userResource);
     };
 
     $container['flash'] = function($container) {
@@ -101,7 +102,8 @@ return function (App $app) {
     };
 
     $container['AuthController'] = function ($c) {
-        return new Controller\Auth\AuthController($c);
+        $userResource = new \App\Resource\UserResource($c->get('em'));
+        return new Controller\Auth\AuthController($c,$userResource);
     };
 
 

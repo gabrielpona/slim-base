@@ -3,6 +3,7 @@
 namespace App\Controller\Auth;
 
 use App\Domain\User;
+use App\Resource\UserResource;
 
 class AuthController
 {
@@ -10,10 +11,12 @@ class AuthController
     /* -----Move to superclass ----*/
 
     protected $container;
+    private $userResource;
 
-    public function __construct($container)
+    public function __construct($container, UserResource $userResource)
     {
         $this->container = $container;
+        $this->userResource = $userResource;
     }
 
     public function __get($property)
@@ -28,7 +31,13 @@ class AuthController
     public function user()
     {
         //return User::find(isset($_SESSION['user']) ? $_SESSION['user'] : 0);
-        return new User();
+        $user = null;
+        if(isset($_SESSION['user'])){
+            $user = $_SESSION['user'];
+        }else{
+            $user = $this->userResource->findById($_SESSION['user']);
+        }
+        return $user;
     }
 
     public function check()
@@ -36,11 +45,26 @@ class AuthController
         return isset($_SESSION['user']);
     }
 
-    public function attempt($email, $password)
+    public function attempt($username, $password)
     {
 
+        $user = $this->userResource->findByUsername($username);
 
-        return false;
+        if(!$user){
+            return false;
+        }
+
+        if(strcmp($password, $user['password'])==0){
+            $_SESSION['user'] = $user['id'];
+            return true;
+        }
+
+        /*
+        if (password_verify($password, $user->password)) {
+            $_SESSION['user'] = $user->id;
+            return true;
+        }
+        */
 
         /*
         $user = User::where('email', $email)->first();
@@ -54,8 +78,10 @@ class AuthController
             return true;
         }
 
+         */
+
         return false;
-        */
+
     }
 
     public function logout()
@@ -76,22 +102,28 @@ class AuthController
     public function getSignIn($request, $response)
     {
         //return $this->view->render($response, 'auth/signin.twig');
-        return $this->container->view->render($response, 'auth.signin', ['name' => 'a']);
+        //return $this->container->view->render($response, 'auth.signin', ['name' => 'a']);
+        return $this->container->view->render($response,'auth.signin.twig');
     }
 
     public function postSignIn($request, $response)
     {
+
         $auth = $this->auth->attempt(
-            $request->getParam('email'),
+            $request->getParam('username'),
             $request->getParam('password')
         );
 
+
+
         if (! $auth) {
-            $this->flash->addMessage('error', 'Could not sign you in with those details');
+            $this->flash->addMessage('error', 'Beh! Could not sign you in with those details');
             return $response->withRedirect($this->router->pathFor('auth.signin'));
         }
 
-        return $response->withRedirect($this->router->pathFor('home'));
+        return $response->withRedirect($this->router->pathFor('protected'));
+
+
     }
 
     public function getSignUp($request, $response)

@@ -70,4 +70,14 @@ class Foto extends AbstractDomain
         $this->mimeType = $mimeType;
     }
 
+    public function __toArray()
+    {
+        $data = [];
+        foreach ($this as $k=>$v)
+            $data[$k] = $v;
+
+        return $data;
+    }
+
+
 }

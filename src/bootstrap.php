@@ -18,8 +18,15 @@ if (!defined('APP_ROOT')) {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$container = new Container(require __DIR__ . '/settings.php');
+//Loading Dotenv Parameters
+$dotenv = null;
+try {
+    $dotenv = (new \Dotenv\Dotenv(__DIR__ . '/../'))->load();
+} catch (\Dotenv\Exception\InvalidPathException $e) {
+    echo $e;
+}
 
+$container = new Container(require __DIR__ . '/settings.php');
 
 $container[EntityManager::class] = function (Container $container): EntityManager {
 

@@ -25,14 +25,7 @@ abstract class AbstractDomain
         return get_object_vars($this);
     }
 
-    public function __toArray()
-    {
-        $data = [];
-        foreach ($this as $k=>$v)
-            $data[$k] = $v;
-
-        return $data;
-    }
+    public abstract function __toArray();
 
 
 }

@@ -23,10 +23,12 @@ class User extends AbstractDomain
         if (!empty($data['username']))
             $this->username = $data['username'];
 
+        /*
         if (!empty($data['password'])) {
             $bcrypt = new Bcrypt();
             $this->password = $bcrypt->setHash($data['password']);
         }
+        */
     }
 
     public function getId()
@@ -43,5 +45,15 @@ class User extends AbstractDomain
     {
         return $this->password;
     }
+
+    public function __toArray()
+    {
+        $data = [];
+        foreach ($this as $k=>$v)
+            $data[$k] = $v;
+
+        return $data;
+    }
+
 
 }

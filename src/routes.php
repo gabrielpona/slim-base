@@ -18,7 +18,7 @@ return function (App $app) {
         $this->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup');
         $this->post('/auth/signup', 'AuthController:postSignUp');
         $this->get('/auth/signin', 'AuthController:getSignIn')->setName('auth.signin');
-        $this->post('/auth/signin', 'AuthController:postSignIn');
+        $this->post('/auth/signin', 'AuthController:postSignIn')->setName('auth.signin.post');
     })->add(new Middleware\GuestMiddleware($container));
 
 

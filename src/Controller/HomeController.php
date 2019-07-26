@@ -28,9 +28,9 @@ final class HomeController {
      * Método Construtor
      * @param ContainerInterface $container
      */
-    public function __construct($container,FotoResource $photoResource) {
+    public function __construct($container,FotoResource $fotoResource) {
         $this->container = $container;
-        $this->fotoResource = $photoResource;
+        $this->fotoResource = $fotoResource;
     }
 
     /**
@@ -44,7 +44,11 @@ final class HomeController {
     public function index($request, $response, $args) {
         //$data = ['subscriber' => 'teste'];
         //return $this->container->view->render($response, 'home.index', $data);
-        return $this->container->view->render($response,'index.twig');
+
+        $foto = $this->fotoResource->findByid(1);
+        //var_dump($foto);
+        //var_dump($_SESSION['user']);
+        return $this->container->view->render($response,'home.index.twig');
     }
 
 }

@@ -4,7 +4,6 @@ if (!defined('APP_ROOT')) {
     define('APP_ROOT', __DIR__);
 }
 
-
 return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
@@ -37,13 +36,13 @@ return [
             //'metadata_dirs' => [APP_ROOT . '/Domain'],
 
             'connection' => [
-                'driver' => 'pdo_mysql',
-                'host' => 'localhost',
-                'port' => 3306,
-                'dbname' => 'slimdb',
-                'user' => 'root',
-                'password' => '',
-                'charset' => 'utf8'
+                'driver' => getenv('DB_DRIVER'),
+                'host' => getenv('DB_HOST'),
+                'port' => getenv('DB_PORT'),
+                'dbname' => getenv('DB_DATABASE'),
+                'user' => getenv('DB_USERNAME'),
+                'password' => getenv('DB_PASSWORD'),
+                'charset' => getenv('DB_CHARSET')
             ],'meta' => [
                 'entity_path' => [
                     APP_ROOT . '/Domain'
