@@ -8,15 +8,15 @@
 
 namespace App\Resource;
 
-use App\Abstracts\AbstractResource;
+use App\Abstracts\AbstractDao;
 
-class FotoResource extends AbstractResource
+class FotoDao extends AbstractDao
 {
 
 
     public function findById($id, $array = true)
     {
-        $repo = $this->entityManager->getRepository('App\Domain\Foto');
+        $repo = $this->entityManager->getRepository('App\Entity\Foto');
         $user = $repo->findOneBy(['id'=>$id]);
 
         if ($array and $user)
@@ -29,7 +29,7 @@ class FotoResource extends AbstractResource
 
 
     public function list(){
-        $fotos = $this->entityManager->getRepository('App\Domain\Foto')->findAll();
+        $fotos = $this->entityManager->getRepository('App\Entity\Foto')->findAll();
         $fotos = array_map(
             function ($foto) {
                 return $foto->getArrayCopy();

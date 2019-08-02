@@ -52,7 +52,7 @@ return function (App $app) {
             'user' => $container->auth->user()
             */
             'check' => false,
-            'user' => new \App\Domain\User()
+            'usuario' => new \App\Entity\Usuario()
         ]);
 
         $view->getEnvironment()->addGlobal('flash', $container->flash);
@@ -79,7 +79,7 @@ return function (App $app) {
 
 
     $container['auth'] = function($c) {
-        $userResource = new \App\Resource\UserResource($c->get('em'));
+        $userResource = new \App\Resource\UsuarioDao($c->get('em'));
         return new \App\Controller\Auth\AuthController($c,$userResource);
     };
 
@@ -98,20 +98,21 @@ return function (App $app) {
     */
 
     $container['AuthController'] = function ($c) {
-        $userResource = new \App\Resource\UserResource($c->get('em'));
+        $userResource = new \App\Resource\UsuarioDao($c->get('em'));
         return new Controller\Auth\AuthController($c,$userResource);
     };
 
-
     $container['HomeController'] = function ($c) {
-        $fotoResource = new \App\Resource\FotoResource($c->get('em'));
+        $fotoResource = new \App\Resource\FotoDao($c->get('em'));
         return new Controller\HomeController($c,$fotoResource);
     };
 
     $container['PainelController'] = function ($c) {
-        //$fotoResource = new \App\Resource\FotoResource($c->get('em'));
         return new Controller\restricted\PainelController($c);
     };
 
+    $container['UsuarioController'] = function ($c) {
+        return new Controller\restricted\UsuarioController($c);
+    };
 
 };

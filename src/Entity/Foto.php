@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain;
+namespace App\Entity;
 
-use App\Abstracts\AbstractDomain;;
+use App\Abstracts\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="foto")
  */
-class Foto extends AbstractDomain
+class Foto extends AbstractEntity
 {
     /**
      * @ORM\Column(type="string", length=64)
@@ -21,22 +21,6 @@ class Foto extends AbstractDomain
      */
     protected $mimeType;
 
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed

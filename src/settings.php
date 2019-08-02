@@ -45,7 +45,7 @@ return [
                 'charset' => getenv('DB_CHARSET')
             ],'meta' => [
                 'entity_path' => [
-                    APP_ROOT . '/Domain'
+                    APP_ROOT . '/Entity'
                 ],
                 'auto_generate_proxies' => true,
                 'proxy_dir' => APP_ROOT . '/../tmp/doctrine/proxies',

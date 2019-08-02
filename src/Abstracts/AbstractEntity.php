@@ -4,7 +4,7 @@ namespace App\Abstracts;
 
 use Doctrine\ORM\Mapping as ORM;
 
-abstract class AbstractDomain
+abstract class AbstractEntity
 {
     /**
      * @ORM\Id
@@ -13,6 +13,23 @@ abstract class AbstractDomain
      */
     protected $id;
 
+
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
 
     /**

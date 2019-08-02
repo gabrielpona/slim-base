@@ -1,13 +1,13 @@
 <?php
 namespace App\Abstracts;
 
-abstract class AbstractResource
+abstract class AbstractDao
 {
 
     protected $entityManager;
 
     /**
-     * AbstractResource constructor.
+     * AbstractDao constructor.
      * @param $entityManager
      */
     public function __construct($entityManager)

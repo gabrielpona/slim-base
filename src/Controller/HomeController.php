@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use App\Resource\FotoResource;
+use App\Resource\FotoDao;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 /**
@@ -28,7 +28,7 @@ final class HomeController {
      * Método Construtor
      * @param ContainerInterface $container
      */
-    public function __construct($container,FotoResource $fotoResource) {
+    public function __construct($container, FotoDao $fotoResource) {
         $this->container = $container;
         $this->fotoResource = $fotoResource;
     }

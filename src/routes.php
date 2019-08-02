@@ -28,7 +28,7 @@ return function (App $app) {
         $this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
         $this->post('/auth/password/change', 'PasswordController:postChangePassword');
         $this->get('/protected',  function () {
-            echo 'Página protegida';
+            phpinfo();
         })->setName('protected');
     })->add(new Middleware\AuthMiddleware($container));
 
@@ -37,8 +37,21 @@ return function (App $app) {
     $app->group('/painel', function () {
         $this->get('/index', 'PainelController:getIndex')->setName('painel.index');
         $this->get('/teste',  function () {
-            echo 'Página protegida';
+
+            $version = phpversion();
+
+            echo 'Página protegida - PHP '.$version;
         })->setName('protected');
+        $this->get('/usuario/list', 'UsuarioController:getList')->setName('usuario.list');
+    })->add(new Middleware\AuthMiddleware($container));
+
+
+
+
+    //Authenticated JSON Routes
+    $app->group('/json', function () {
+        $this->post('/usuario/list', 'UsuarioController:postDtJson')->setName('usuario.list.json');
+        $this->post('/usuario/teste', 'UsuarioController:postTeste')->setName('usuario.teste.json');
     })->add(new Middleware\AuthMiddleware($container));
 
 

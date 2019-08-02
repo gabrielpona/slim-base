@@ -2,8 +2,8 @@
 
 namespace App\Controller\Auth;
 
-use App\Domain\User;
-use App\Resource\UserResource;
+use App\Entity\User;
+use App\Resource\UsuarioDao;
 
 class AuthController
 {
@@ -13,7 +13,7 @@ class AuthController
     protected $container;
     private $userResource;
 
-    public function __construct($container, UserResource $userResource)
+    public function __construct($container, UsuarioDao $userResource)
     {
         $this->container = $container;
         $this->userResource = $userResource;
@@ -32,30 +32,30 @@ class AuthController
     {
         //return User::find(isset($_SESSION['user']) ? $_SESSION['user'] : 0);
         $user = null;
-        if(isset($_SESSION['user'])){
-            $user = $_SESSION['user'];
+        if(isset($_SESSION['usuario'])){
+            $user = $_SESSION['usuario'];
         }else{
-            $user = $this->userResource->findById($_SESSION['user']);
+            $user = $this->userResource->findById($_SESSION['usuario']);
         }
         return $user;
     }
 
     public function check()
     {
-        return isset($_SESSION['user']);
+        return isset($_SESSION['usuario']);
     }
 
-    public function attempt($username, $password)
+    public function attempt($login, $password)
     {
 
-        $user = $this->userResource->findByUsername($username);
+        $user = $this->userResource->findByLogin($login);
 
         if(!$user){
             return false;
         }
 
-        if(strcmp($password, $user['password'])==0){
-            $_SESSION['user'] = $user['id'];
+        if(strcmp($password, $user['senha'])==0){
+            $_SESSION['usuario'] = $user['id'];
             return true;
         }
 
@@ -110,8 +110,8 @@ class AuthController
     {
 
         $auth = $this->auth->attempt(
-            $request->getParam('username'),
-            $request->getParam('password')
+            $request->getParam('login'),
+            $request->getParam('senha')
         );
 
 

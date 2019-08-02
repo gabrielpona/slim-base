@@ -12,12 +12,15 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1 class="pull-left">
-            <!--<decorator:getProperty property="page.local_title"/>-->
-            Título
-            <small>Subtítulo<!--<decorator:getProperty property="page.local_subtitle"/>--></small>
+            {% block titulo %}{% endblock %}
+            <small>
+              {% block subtitulo %}{% endblock %}
+            </small>
           </h1>
           <div class="pull-right">
-            <!--<decorator:getProperty property="page.local_controls"/>-->
+            {% block local_controls %}
+
+            {% endblock %}
           </div>
           <div class="clearfix"></div>
         </section>
@@ -66,4 +69,22 @@
 
 <!-- AdminLTE App -->
 <script src="{{base_url()}}/assets/js/app.min.js" type="text/javascript"></script>
+
+<!-- Datatables -->
+<script src="{{base_url()}}/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{base_url()}}/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="{{base_url()}}/assets/plugins/datatables/jquery.dataTables.moment.js"></script>
+<script src="{{base_url()}}/assets/plugins/jQuery-contextMenu/jquery.contextMenu.min.js"></script>
+<script src="{{base_url()}}/assets/plugins/jQuery-contextMenu/jquery.ui.position.min.js"></script>
+
+
+
+  {% block local_style %}
+    <!--Content Here-->
+  {% endblock %}
+
+  {% block local_script %}
+    <!--Content Here-->
+  {% endblock %}
+
 </html>
