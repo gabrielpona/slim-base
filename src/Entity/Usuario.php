@@ -13,16 +13,25 @@ class Usuario extends AbstractEntity
 {
 
     /** @ORM\Column(type="string", length=100) **/
+    private $nome;
+
+    /** @ORM\Column(type="string", length=100) **/
+    private $email;
+
+    /** @ORM\Column(type="string", length=100) **/
     private $login;
 
     /** @ORM\Column(type="string", length=100) **/
     private $senha;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Perfil")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Perfil",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false,referencedColumnName="id")
      */
     private $perfil;
+
+    /** @ORM\Column(type="boolean", length=100) **/
+    private $ativo;
 
     public function __construct(Array $data = [])
     {
@@ -84,6 +93,56 @@ class Usuario extends AbstractEntity
     {
         $this->perfil = $perfil;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * @param mixed $nome
+     */
+    public function setNome($nome): void
+    {
+        $this->nome = $nome;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
+
+    /**
+     * @param mixed $ativo
+     */
+    public function setAtivo($ativo): void
+    {
+        $this->ativo = $ativo;
+    }
+
+
 
 
     public function __toArray()

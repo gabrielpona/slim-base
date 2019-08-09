@@ -1,0 +1,109 @@
+{% extends 'templates/restrito/main.twig' %}
+
+{% block titulo %}
+   Usuários
+{% endblock %}
+{% block subtitulo %}
+    Criação
+{% endblock %}
+{% block local_controls %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 panel-grid">
+            <div class="box">
+                <div class="box-body">
+                    <form role="form" method="POST" action="{{path_for('usuario.add')}}" enctype="multipart/form-data" class="form-usuario-add">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="nome">Nome</label>
+                                <input type="text" class="form-control no-caps" id="nome" name="usuario.nome" value="" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="email">E-mail</label>
+                                <input type="email" class="form-control no-caps" id="email" name="usuario.email" value=""required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group-sm required">
+                                <label class="small control-label">Usuário ativo?</label>
+                                <div class="form-control">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="usuario.ativo" id="ativo-true" value="true" checked> Sim
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="usuario.ativo" id="ativo-false" value="false"> Não
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="login">Login</label>
+                                <input type="text" class="form-control no-caps" id="login" name="usuario.login" value=""required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="senha">Senha</label>
+                                <input type="text" class="form-control no-caps" id="senha" name="usuario.senha" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="papel">Papel</label>
+                                <select name="usuario.perfil.id" class="form-control select2" id="perfil" required>
+                                    <option value="-1" selected disabled style="font-style: italic;">Selecione...</option>
+                                    {% for perfil in perfilList %}
+                                        <option value="{{ perfil.id }}" >{{ perfil.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pull-right">
+                                <a href="{{ path_for("usuario.list") }}" class="btn btn-sm btn-link btn-flat">Cancelar</a>
+                                <button type="submit" class="btn btn-sm btn-primary btn-flat btn-save"><i class="fa fa-save"></i> Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block local_script %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+
+            /*
+            var $tb = $('#dt-usuarios');
+
+            var $grid = $tb.DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "",
+                    "type": "POST"
+                },
+                "columns": [
+                    { "data": "login" },
+                    { "data": "perfil" }
+                ],
+                "order": [ 1, "asc" ]
+            });
+            */
+
+        });
+    </script>
+{% endblock %}

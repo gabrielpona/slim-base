@@ -7,7 +7,7 @@
     listagem
 {% endblock %}
 {% block local_controls %}
-    <a href="/solicitacao/create" class="btn btn-info btn-sm btn-flat">Criar novo</a>
+    <a href="{{path_for('usuario.create')}}" class="btn btn-info btn-sm btn-flat">Criar novo</a>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -17,8 +17,10 @@
                     <table id="dt-usuarios" class="table table-striped table-bordered table-hover small" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th style="width: 60%">Login</th>
-                            <th style="width: 40%">Perfil</th>
+                            <th style="width: 40%">Nome</th>
+                            <th style="width: 20%">Login</th>
+                            <th style="width: 20%">E-mail</th>
+                            <th style="width: 20%">Perfil</th>
                         </tr>
                         </thead>
                     </table>
@@ -41,12 +43,13 @@
                     "type": "POST"
                 },
                 "columns": [
+                    { "data": "nome" },
                     { "data": "login" },
+                    { "data": "email" },
                     { "data": "perfil" }
                 ],
-                "order": [ 1, "asc" ]
+                "order": [ 0, "asc" ]
             });
-
         });
     </script>
 {% endblock %}

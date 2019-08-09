@@ -86,7 +86,7 @@ class AuthController
 
     public function logout()
     {
-        unset($_SESSION['user']);
+        unset($_SESSION['usuario']);
     }
 
 
@@ -95,7 +95,7 @@ class AuthController
 
     public function postSignOut($request, $response)
     {
-        $this->auth->logout();
+        $this->logout();
         return $response->withRedirect($this->router->pathFor('home'));
     }
 
@@ -109,7 +109,7 @@ class AuthController
     public function postSignIn($request, $response)
     {
 
-        $auth = $this->auth->attempt(
+        $auth = $this->attempt(
             $request->getParam('login'),
             $request->getParam('senha')
         );
@@ -132,6 +132,9 @@ class AuthController
 
     public function postSignUp($request, $response)
     {
+
+
+
         /*
 
         $validation = $this->validator->validate($request, [
@@ -139,6 +142,8 @@ class AuthController
             'name' => v::noWhitespace()->notEmpty()->alpha(),
             'password' => v::noWhitespace()->notEmpty(),
         ]);
+
+
 
         if ($validation->failed()) {
             return $response->withRedirect($this->router->pathFor('auth.signup'));

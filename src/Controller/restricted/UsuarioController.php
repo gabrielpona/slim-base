@@ -10,7 +10,10 @@ namespace App\Controller\restricted;
 
 
 use App\Abstracts\AbstractController;
+use App\Entity\Perfil;
+use App\Entity\Usuario;
 use App\Helper\Datatables\DataTables;
+use App\Resource\PerfilDao;
 use App\Resource\UsuarioDao;
 use App\Transients\DataTables\DtUsuario;
 use PHPUnit\Util\Exception;
@@ -22,9 +25,12 @@ class UsuarioController extends AbstractController
 {
 
 
+    private $perfilDao;
+
     public function __construct($container)
     {
         parent::__construct($container,new UsuarioDao($container->get('em')));
+        $this->perfilDao = new PerfilDao($container->get('em'));
     }
 
     public function getList($request, $response, $args){
@@ -38,37 +44,41 @@ class UsuarioController extends AbstractController
     }
 
 
-    /*
-    @Post("/painel/usuario/list.json")
-    @Permission({Role.SYSADMIN,Role.SUPERVISOR,Role.ASSOCIACAO_GERENTE})
-    public void listDtJson(Integer draw, DtUsuario dtUsuario, int start, int length, @Named("order[0][column]") int orderColumn,
-                           @Named("order[0][dir]") String orderDirection) {
-    try {
-        Long associacaoId = 0L;
-            if(userSession.getUsuario().isAssociacao()){
-                associacaoId = userSession.getUsuario().getAssociacao().getId();
-            }
-            DataTables<DtUsuario> dataTables = usuarioDao.listJson(dtUsuario, associacaoId,start, length, orderColumn, orderDirection);
-            dataTables.setDraw(draw);
-            result.use(Results.json()).withoutRoot().from(dataTables).include("data").serialize();
-        } catch (Exception e) {
-        JsonUtils.setErrorJsonResult(result, e);
+
+    public function getCreate($request,$response,$args){
+
+        $perfilList = $this->perfilDao->listAll();
+        $data['perfilList'] = $perfilList;
+
+        return $this->container->view->render($response,'usuario.create.twig',$data);
     }
+
+    public function postCreate($request,$response,$args){
+
+        try{
+            $usuario = new Usuario();
+            $usuario->setNome($request->getParam('usuario_nome'));
+            $usuario->setEmail($request->getParam('usuario_email'));
+            $usuario->setAtivo((boolean)$request->getParam('usuario_ativo'));
+            $usuario->setLogin($request->getParam('usuario_login'));
+            $usuario->setSenha($request->getParam('usuario_senha'));
+
+            //TODO: Realmente necessário popular o objeto desta maneira?
+            $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
+            $usuario->setPerfil($perfil);
+
+            $this->dao->createEntity($usuario);
+
+            $this->container['flash']->addMessage('info', 'Usuário adicionado com sucesso.');
+            return $response->withRedirect($this->container->router->pathFor('usuario.list'));
+
+        }catch(Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->container->router->pathFor('usuario.create'));
+        }
+
     }
-    */
 
-
-    public function postTeste (ServerRequestInterface $request, ResponseInterface $response,array $args){
-
-        $parsedBody = $request->getParsedBody();
-
-
-        var_dump($parsedBody['nasc']);
-
-
-        //return $response->withJson("a");
-
-    }
 
     public function postDtJson(ServerRequestInterface $request, ResponseInterface $response){
         try{
@@ -79,18 +89,13 @@ class UsuarioController extends AbstractController
             $draw = $pb['draw'];
             $start = $pb['start'];
             $length = $pb['length'];
-            //$orderColumn = $pb['orderColumn'];
-            //$orderDirection = $pb['orderDirection'];
-            $orderColumn = 0;
-            $orderDirection = 'asc';
-
-            $dtUsuario = new DtUsuario();
-            //$dtUsuario->setDTRowId($pb['dtUsuario']['DTRowId']);
-            //$dtUsuario->setLogin($pb['dtUsuario']['login']);
+            $orderColumn = $pb['order'][0]['column'];
+            $orderDirection = $pb['order'][0]['dir'];
+            $search = $pb['search']['value'];
 
 
             //(DtUsuario $dtUsuario,$search,$start,$length,$orderColumn,$orderDirection)
-            $datatables = $this->dao->listDtJson($dtUsuario,"",$start,$length,$orderColumn,$orderDirection);
+            $datatables = $this->dao->listDtJson($search,$start,$length,$orderColumn,$orderDirection);
             $datatables->setDraw($draw);
             //return $response->withJson($datatables);
             return $response->withJson($datatables->__toArray());

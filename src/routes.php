@@ -22,7 +22,6 @@ return function (App $app) {
     })->add(new Middleware\GuestMiddleware($container));
 
 
-
     $app->group('', function () {
         $this->post('/auth/signout', 'AuthController:postSignOut')->setName('auth.signout.post');
         $this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
@@ -33,19 +32,16 @@ return function (App $app) {
     })->add(new Middleware\AuthMiddleware($container));
 
 
-
     $app->group('/painel', function () {
         $this->get('/index', 'PainelController:getIndex')->setName('painel.index');
         $this->get('/teste',  function () {
-
             $version = phpversion();
-
             echo 'Página protegida - PHP '.$version;
         })->setName('protected');
         $this->get('/usuario/list', 'UsuarioController:getList')->setName('usuario.list');
+        $this->get('/usuario/create', 'UsuarioController:getCreate')->setName('usuario.create');
+        $this->post('/usuario/add', 'UsuarioController:postCreate')->setName('usuario.add');
     })->add(new Middleware\AuthMiddleware($container));
-
-
 
 
     //Authenticated JSON Routes
