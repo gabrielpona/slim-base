@@ -50,8 +50,13 @@ class UsuarioDao extends AbstractDao
         $user = $repo->findOneBy(['login'=>$login]);
 
 
-        if ($array and $user)
+        if ($array and $user){
+            $perfil = $user->getPerfil()->__toArray();
             $user = $user->__toArray();
+            $user['perfil'] = $perfil;
+
+        }
+
 
         return $user;
     }

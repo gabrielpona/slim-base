@@ -55,7 +55,7 @@ class AuthController
         }
 
         if(strcmp($password, $user['senha'])==0){
-            $_SESSION['usuario'] = $user['id'];
+            $_SESSION['usuario'] = $user;
             return true;
         }
 

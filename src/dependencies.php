@@ -57,6 +57,14 @@ return function (App $app) {
 
         $view->getEnvironment()->addGlobal('flash', $container->flash);
 
+
+        $view->offsetSet("slim_environment",getenv('SLIM_ENVIRONMENT'));
+        $view->offsetSet("app_name",getenv('APP_NAME'));
+        $view->offsetSet("app_version",getenv('APP_VERSION'));
+
+        if(isset($_SESSION['usuario'])){
+            $view->offsetSet('usuario',$_SESSION['usuario']);
+        }
         return $view;
     };
 

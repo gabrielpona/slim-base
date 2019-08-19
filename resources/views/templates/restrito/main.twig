@@ -61,10 +61,10 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Ambiente: ENV_NAME | Perfil: PROFILE_NAME
+      Ambiente: {{ slim_environment }} | Perfil: {{ usuario.perfil.nome }}
     </div>
     <!-- Default to the left -->
-    <span>Versão: 1.0.0</span>
+    <span>Versão: {{ app_version }}</span>
   </footer>
 
 <!-- jQuery 2.1.4 -->

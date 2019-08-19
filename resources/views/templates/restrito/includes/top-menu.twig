@@ -5,7 +5,7 @@
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini"><img src="{{base_url()}}/assets/img/logo-mini.png" class="img-circle" alt="APP" style="max-height: 30px;" /></span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg">APP_NAME</span>
+    <span class="logo-lg">{{ app_name }}</span>
     </a>
 
     <!-- Header Navbar -->
@@ -40,15 +40,15 @@
                     <!-- The user image in the navbar-->
                     <img src="{{base_url()}}/assets/img/default_user.gif" class="user-image" alt="Imagem do usuário"/>
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                    <span class="hidden-xs">NOME USUARIO</span>
+                    <span class="hidden-xs">{{ usuario.login }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="{{base_url()}}/assets/img/default_user.gif" class="img-circle" alt="Imagem do usuário" />
                             <p>
-                                Nome Usuário
-                                <small>Login</small>
+                                {{ usuario.nome }}
+                                <small>{{ usuario.perfil.nome }}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
