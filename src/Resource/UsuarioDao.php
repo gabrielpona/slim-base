@@ -4,10 +4,7 @@ namespace App\Resource;
 use App\Abstracts\AbstractDao;
 use App\Entity\Usuario as Entity;
 use App\Helper\Datatables\DataTablesHelper;
-use App\Transients\DataTables\DtUsuario;
-use Doctrine\ORM\Query\ResultSetMapping;
-use http\QueryString;
-use PDO;
+
 
 class UsuarioDao extends AbstractDao
 {
@@ -64,6 +61,16 @@ class UsuarioDao extends AbstractDao
 
         $conn = $this->entityManager->getConnection();
 
+        //TODO: Not the best way to avoid SQL injections
+        $search = strip_tags(trim($search));
+        $search = str_replace("'", "", $search);
+        $orderColumn = strip_tags(trim($orderColumn));
+        $orderColumn = str_replace("'", "", $orderColumn);
+        $orderDirection = strip_tags(trim($orderDirection));
+        $orderDirection = str_replace("'", "", $orderDirection);
+
+        $search = strtoupper($search);
+
         $sql = "SELECT";
         $sql .="  u.id as DT_RowId,";
         $sql .="  u.nome, ";
@@ -79,25 +86,15 @@ class UsuarioDao extends AbstractDao
 
         if(!empty($search)){
 
-            $sql.=" AND upper(u.nome) like '%%s%' ";
-            $sql.=" OR upper(u.login) like '%%s%' ";
-            $sql.=" OR upper(u.email) like '%%s%'";
-            $sql.=" OR upper(p.nome) like '%%s%'";
-
-            $search = mysql_real_escape_string($search,$conn);
+            $sql.=" AND upper(u.nome) like '%".$search."%' ";
+            $sql.=" OR upper(u.login) like '%".$search."%' ";
+            $sql.=" OR upper(u.email) like '%".$search."%' ";
+            $sql.=" OR upper(p.nome) like  '%".$search."%' ";
         }
 
-        $sql .=" ORDER BY  %d %s";
+        $sql .=" ORDER BY  ".($orderColumn+1)." ".$orderDirection;
 
-
-
-        if(!empty($search)){
-            $escapedSql = sprintf($sql,$search,($orderColumn+1),$orderDirection);
-        }else{
-            $escapedSql = sprintf($sql,($orderColumn+1),$orderDirection);
-        }
-
-        $stmt = $conn->executeQuery($escapedSql);
+        $stmt = $conn->executeQuery($sql);
         $usuarios = $stmt->fetchAll();
         
         $dtHelper = new  DataTablesHelper();
@@ -105,5 +102,6 @@ class UsuarioDao extends AbstractDao
         return $datatables;
 
     }
+
 
 }
