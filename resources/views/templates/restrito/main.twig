@@ -3,6 +3,7 @@
   {% include 'templates/restrito/includes/head.twig' %}
   <body class="skin-blue sidebar-open sidebar-mini">
   <!--TODO:Adicionar Modais-->
+  {% include 'templates/restrito/includes/modal/modal-change-logged-password.twig' %}
   <!--TODO:Adicionar Modais Locais-->
     <div class="wrapper">
       {% include 'templates/restrito/includes/top-menu.twig' %}
@@ -88,6 +89,10 @@
 <script src="{{base_url()}}/assets/plugins/jQuery-contextMenu/jquery.contextMenu.min.js"></script>
 <script src="{{base_url()}}/assets/plugins/jQuery-contextMenu/jquery.ui.position.min.js"></script>
 
+<script src="{{base_url()}}/assets/js/main-util.js"></script>
+<script src="{{base_url()}}/assets/js/main-sync.js"></script>
+<script src="{{base_url()}}/assets/js/main-event.js"></script>
+<script src="{{base_url()}}/assets/js/main.js"></script>
 
 
   {% block local_style %}

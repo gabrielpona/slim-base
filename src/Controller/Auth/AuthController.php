@@ -3,6 +3,7 @@
 namespace App\Controller\Auth;
 
 use App\Entity\User;
+use App\Helper\CryptUtil;
 use App\Resource\UsuarioDao;
 
 class AuthController
@@ -48,13 +49,16 @@ class AuthController
     public function attempt($login, $password)
     {
 
+
+        $crypt = new CryptUtil(getenv("APP_KEY"));
+
         $user = $this->userResource->findByLogin($login);
 
         if(!$user){
             return false;
         }
 
-        if(strcmp($password, $user['senha'])==0){
+        if(strcmp($crypt->encrypt($password), $user['senha'])==0){
             $_SESSION['usuario'] = $user;
             return true;
         }

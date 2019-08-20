@@ -54,5 +54,6 @@ $app->run();
 //php -S localhost:8080 -t public public/index.php
 
 //https://github.com/dappur/framework
+//https://github.com/bryanjhv/slim-session
 
 //$conn->getParams()

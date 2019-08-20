@@ -4,10 +4,20 @@ namespace App\Resource;
 use App\Abstracts\AbstractDao;
 use App\Entity\Usuario as Entity;
 use App\Helper\Datatables\DataTablesHelper;
+use PHPUnit\Util\Exception;
 
 
 class UsuarioDao extends AbstractDao
 {
+
+    private $repo;
+
+    public function __construct($entityManager)
+    {
+        parent::__construct($entityManager);
+        $this->repo = $this->entityManager->getRepository('App\Entity\Usuario');
+    }
+
 
     public function create(array $data)
     {
@@ -27,15 +37,15 @@ class UsuarioDao extends AbstractDao
 
 
     public function listAll(){
-        $repo = $this->entityManager->getRepository('App\Entity\Usuario');
-        return $repo->findAll();
+        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
+        return $this->repo->findAll();
     }
 
 
     public function findById($id, $array = true)
     {
-        $repo = $this->entityManager->getRepository('App\Entity\Usuario');
-        $user = $repo->findOneBy(['id'=>$id]);
+        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
+        $user = $this->repo->findOneBy(['id'=>$id]);
 
         if ($array and $user)
             $user = $user->__toArray();
@@ -46,9 +56,8 @@ class UsuarioDao extends AbstractDao
 
     public function findByLogin($login, $array = true)
     {
-        $repo = $this->entityManager->getRepository('App\Entity\Usuario');
-        $user = $repo->findOneBy(['login'=>$login]);
-
+        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
+        $user = $this->repo->findOneBy(['login'=>$login]);
 
         if ($array and $user){
             $perfil = $user->getPerfil()->__toArray();
@@ -57,8 +66,20 @@ class UsuarioDao extends AbstractDao
 
         }
 
-
         return $user;
+    }
+
+
+    public function changePassword($userId,$oldPwd,$newPwd) {
+
+        $usuario = $this->repo->findOneBy(['id'=>$userId]);
+        if(strcmp($usuario->getSenha(),$oldPwd)==0){
+            $usuario->setSenha($newPwd);
+            $this->entityManager->persist($usuario);
+        }else{
+            throw new \Exception("Senha atual não confere.");
+        }
+        return $this->entityManager->flush();
     }
 
 

@@ -12,11 +12,12 @@ namespace App\Controller\restricted;
 use App\Abstracts\AbstractController;
 use App\Entity\Perfil;
 use App\Entity\Usuario;
+use App\Helper\CryptUtil;
 use App\Helper\Datatables\DataTables;
 use App\Resource\PerfilDao;
 use App\Resource\UsuarioDao;
 use App\Transients\DataTables\DtUsuario;
-use PHPUnit\Util\Exception;
+
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -53,15 +54,29 @@ class UsuarioController extends AbstractController
         return $this->container->view->render($response,'usuario.create.twig',$data);
     }
 
+    public function getEdit($request,$response,$args){
+
+        $route = $request->getAttribute('route');
+        $data['id'] = $route->getArgument('id');
+
+        $perfilList = $this->perfilDao->listAll();
+        $data['perfilList'] = $perfilList;
+
+        return $this->container->view->render($response,'usuario.edit.twig',$data);
+    }
+
     public function postCreate($request,$response,$args){
 
         try{
+
+            $cryptUtil = new CryptUtil(getenv("APP_KEY"));
+
             $usuario = new Usuario();
             $usuario->setNome($request->getParam('usuario_nome'));
             $usuario->setEmail($request->getParam('usuario_email'));
             $usuario->setAtivo((boolean)$request->getParam('usuario_ativo'));
             $usuario->setLogin($request->getParam('usuario_login'));
-            $usuario->setSenha($request->getParam('usuario_senha'));
+            $usuario->setSenha($cryptUtil->encrypt($request->getParam('usuario_senha')));
 
             //TODO: Realmente necessário popular o objeto desta maneira?
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
@@ -72,11 +87,32 @@ class UsuarioController extends AbstractController
             $this->container['flash']->addMessage('info', 'Usuário adicionado com sucesso.');
             return $response->withRedirect($this->container->router->pathFor('usuario.list'));
 
-        }catch(Exception $e){
+        }catch(\Exception $e){
             $this->container['flash']->addMessage('error', $e->getMessage());
             return $response->withRedirect($this->container->router->pathFor('usuario.create'));
         }
 
+    }
+
+    public function postPwdChange($request,$response,$args){
+        try{
+
+            $cryptUtil = new CryptUtil(getenv("APP_KEY"));
+
+            $usrId = $request->getParam('usuario_id');
+            $currPwd = $request->getParam('curr_pwd');
+            $newPwd = $request->getParam('new_pdw');
+
+            $currPwd = $cryptUtil->encrypt($currPwd);
+            $newPwd = $cryptUtil->encrypt($newPwd);
+
+            $this->dao->changePassword($usrId,$currPwd,$newPwd);
+
+            $this->container['flash']->addMessage('info', 'Senha alterada. Reinicie a sessão para que as alterações tenham efeito.');
+        }catch(\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+        }
+        return $response->withRedirect($this->container->router->pathFor('painel.index'));
     }
 
 
