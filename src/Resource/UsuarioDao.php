@@ -35,6 +35,13 @@ class UsuarioDao extends AbstractDao
         return $this->entityManager->flush();
     }
 
+    public function updateEntity(Entity $usuario)
+    {
+        //var_dump($usuario);
+        $this->entityManager->merge($usuario);
+        return $this->entityManager->flush();
+    }
+
 
     public function listAll(){
         //$repo = $this->entityManager->getRepository('App\Entity\Usuario');

@@ -57,12 +57,60 @@ class UsuarioController extends AbstractController
     public function getEdit($request,$response,$args){
 
         $route = $request->getAttribute('route');
-        $data['id'] = $route->getArgument('id');
+        $id = $route->getArgument('id');
 
-        $perfilList = $this->perfilDao->listAll();
-        $data['perfilList'] = $perfilList;
+        try{
+            if(!isset($id))
+                throw new \Exception("Usuário não informado.");
+            if(!is_numeric($id)|| $id<=0)
+                throw new \Exception("Usuário inválido.");
 
-        return $this->container->view->render($response,'usuario.edit.twig',$data);
+            $usuario = $this->dao->findById($id);
+
+            if(!isset($usuario))
+                throw new \Exception("Usuário não encontrado.");
+
+            $data['usuario'] = $usuario;
+
+            $perfilList = $this->perfilDao->listAll();
+            $data['perfilList'] = $perfilList;
+
+            return $this->container->view->render($response,'usuario.edit.twig',$data);
+
+        }catch (\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->container->router->pathFor('usuario.list'));
+        }
+
+    }
+
+    public function postEdit($request,$response,$args){
+
+        try{
+
+            //$cryptUtil = new CryptUtil(getenv("APP_KEY"));
+
+            $usuario = $this->dao->findById($request->getParam('usuario_id'),false);
+            $usuario->setNome($request->getParam('usuario_nome'));
+            $usuario->setEmail($request->getParam('usuario_email'));
+            $usuario->setAtivo((boolean)$request->getParam('usuario_ativo'));
+            $usuario->setLogin($request->getParam('usuario_login'));
+            //$usuario->setSenha($cryptUtil->encrypt($request->getParam('usuario_senha')));
+
+            //TODO: Realmente necessário popular o objeto desta maneira?
+            $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
+            $usuario->setPerfil($perfil);
+
+            $this->dao->updateEntity($usuario);
+
+            $this->container['flash']->addMessage('info', 'Usuário atualizado com sucesso.');
+            return $response->withRedirect($this->container->router->pathFor('usuario.list'));
+
+        }catch(\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->container->router->pathFor('usuario.create'));
+        }
+
     }
 
     public function postCreate($request,$response,$args){
