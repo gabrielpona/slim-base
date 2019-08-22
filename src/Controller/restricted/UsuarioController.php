@@ -18,7 +18,6 @@ use App\Resource\PerfilDao;
 use App\Resource\UsuarioDao;
 use App\Transients\DataTables\DtUsuario;
 
-
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -58,16 +57,23 @@ class UsuarioController extends AbstractController
 
         $route = $request->getAttribute('route');
         $id = $route->getArgument('id');
+        $usuario = null;
 
         try{
-            if(!isset($id))
-                throw new \Exception("Usuário não informado.");
-            if(!is_numeric($id)|| $id<=0)
-                throw new \Exception("Usuário inválido.");
 
-            $usuario = $this->dao->findById($id);
+            if(isset($args['usuario'])){
+                $usuario = $args['usuario'];
 
-            if(!isset($usuario))
+            }else{
+                if($id ==null || !is_numeric($id)|| $id<=0 ) {
+                    throw new \Exception("Usuário inválido.");
+
+                }else{
+                    $usuario = $this->dao->findById($id);
+                }
+            }
+
+            if($usuario==null)
                 throw new \Exception("Usuário não encontrado.");
 
             $data['usuario'] = $usuario;
@@ -86,18 +92,21 @@ class UsuarioController extends AbstractController
 
     public function postEdit($request,$response,$args){
 
+        $id = 0;
+        $usuario = new Usuario();
+
         try{
 
-            //$cryptUtil = new CryptUtil(getenv("APP_KEY"));
+            $id = $request->getParam('usuario_id');
 
-            $usuario = $this->dao->findById($request->getParam('usuario_id'),false);
+            $usuario = $this->dao->findById($id,false);
             $usuario->setNome($request->getParam('usuario_nome'));
             $usuario->setEmail($request->getParam('usuario_email'));
             $usuario->setAtivo((boolean)$request->getParam('usuario_ativo'));
             $usuario->setLogin($request->getParam('usuario_login'));
             //$usuario->setSenha($cryptUtil->encrypt($request->getParam('usuario_senha')));
 
-            //TODO: Realmente necessário popular o objeto desta maneira?
+            //TODO: Any Doctrine turnaround?
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
             $usuario->setPerfil($perfil);
 
@@ -108,7 +117,10 @@ class UsuarioController extends AbstractController
 
         }catch(\Exception $e){
             $this->container['flash']->addMessage('error', $e->getMessage());
-            return $response->withRedirect($this->container->router->pathFor('usuario.create'));
+            //$url = $this->container->router->pathFor('usuario.edit', ['id' => $id]);
+            return $response->withRedirect($this->getEdit($request,$response,array('id'=>$id,'usuario'=>$usuario)))
+                ->withStatus(302)
+                ->withoutHeader('Location');
         }
 
     }

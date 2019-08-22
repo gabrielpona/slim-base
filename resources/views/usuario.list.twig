@@ -1,5 +1,4 @@
 {% extends 'templates/restrito/main.twig' %}
-
 {% block titulo %}
    Usuários
 {% endblock %}
@@ -50,6 +49,22 @@
                 ],
                 "order": [ 0, "asc" ]
             });
+
+            var contextMenuOpts = {
+                selector: '.dataTable td:not([colspan])',
+                items:{
+                    detail: {
+                        name: "Editar",
+                        icon: "fa-edit",
+                        disabled: false,
+                        callback: function (key, opt) {
+                            var id = opt.$trigger.parents('tr').attr('id');
+                            window.location.href = (Main.Util.getBaseUrl("/painel/usuario/edit/" + id));
+                        }
+                    }
+                }
+            };
+            $.contextMenu(contextMenuOpts);
         });
     </script>
 {% endblock %}
