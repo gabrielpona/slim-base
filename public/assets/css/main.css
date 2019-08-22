@@ -1,0 +1,14 @@
+.context-menu-list { border: 1px solid #DCDCDC; background: #FFFFFF;
+    z-index: 9999 !important;
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    -ms-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    -o-box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,.2); }
+.context-menu-item { font-size: .95em; padding: 8px 8px 8px 10px; color: #121212; background-color: #FFFFFF; border-bottom: 1px solid #DEDEDE;
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; }
+.context-menu-item:last-of-type { border-bottom: none; }
+.context-menu-item.hover{ background-color:#337AB7; color: #ffffff }
+.context-menu-item:not(.context-menu-icon) .fa { color: #2980b9; }
+.context-menu-item:not(.context-menu-icon).context-menu-hover .fa { color: #ffffff; }
+.context-menu-item.context-menu-icon--fa span { margin-left: 16px; line-height: 1.42857143; }
