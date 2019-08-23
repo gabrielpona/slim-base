@@ -11,7 +11,6 @@ class GuestMiddleware extends Middleware
         if($this->container->auth->check()) {
             return $response->withRedirect($this->container->router->pathFor('home'));
         }
-
         $response = $next($request, $response);
         return $response;
     }

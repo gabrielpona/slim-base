@@ -14,6 +14,7 @@ class AuthController
     protected $container;
     private $userResource;
 
+
     public function __construct($container, UsuarioDao $userResource)
     {
         $this->container = $container;
@@ -48,7 +49,6 @@ class AuthController
 
     public function attempt($login, $password)
     {
-
 
         $crypt = new CryptUtil(getenv("APP_KEY"));
 
@@ -166,6 +166,11 @@ class AuthController
         */
         return $response->withRedirect($this->router->pathFor('home'));
     }
+
+
+
+
+
 
 
 
