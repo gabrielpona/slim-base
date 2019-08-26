@@ -22,7 +22,7 @@ class AclHelper
     {
         $this->acl = [
             'protected'=>['SYSADMIN'],
-            'usuario.list'=>['SYSADMIN']
+            'usuario.list'=>['SYSADMIN','GESTOR']
         ];
     }
 

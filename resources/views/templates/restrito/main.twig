@@ -7,7 +7,25 @@
   <!--TODO:Adicionar Modais Locais-->
     <div class="wrapper">
       {% include 'templates/restrito/includes/top-menu.twig' %}
-      {% include 'templates/restrito/includes/left-sidebar-public.twig' %}
+
+
+      {% if usuario.perfil.slug == "SYSADMIN" %}
+
+        {% include 'templates/restrito/includes/left-sidebar-sysadmin.twig' %}
+
+      {% elseif usuario.perfil.slug == "ADMINISTRATIVO" %}
+
+        {% include 'templates/restrito/includes/left-sidebar-administrativo.twig' %}
+
+      {% elseif usuario.perfil.slug == "GESTOR" %}
+
+        {% include 'templates/restrito/includes/left-sidebar-gestor.twig' %}
+
+      {% else %}
+
+        {% include 'templates/restrito/includes/left-sidebar-public.twig' %}
+
+      {% endif %}
 
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
