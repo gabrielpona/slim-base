@@ -87,8 +87,9 @@ return function (App $app) {
 
 
     $container['auth'] = function($c) {
-        $userResource = new \App\Resource\UsuarioDao($c->get('em'));
-        return new \App\Controller\Auth\AuthController($c,$userResource);
+        //$userResource = new \App\Resource\UsuarioDao($c->get('em'));
+        //return new \App\Controller\Auth\AuthController($c,$userResource);
+        return new \App\Helper\AuthHelper();
     };
 
     $container['flash'] = function($container) {
