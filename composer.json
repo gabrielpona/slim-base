@@ -1,14 +1,14 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
-    "keywords": ["microframework", "rest", "router", "psr7"],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "name": "slim/slim-base",
+    "description": "A Slim Framework skeleton application with Doctrine",
+    "keywords": ["microframework", "rest", "router", "psr7","doctrine"],
+    "homepage": "https://github.com/gabrielpona/slim-base",
     "license": "MIT",
     "authors": [
         {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
+            "name": "Gabriel Ponã",
+            "email": "gabriel_pona@hotmail.com",
+            "homepage": "https://twitter.com/gabriel_pona"
         }
     ],
     "require": {

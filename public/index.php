@@ -21,10 +21,6 @@ function url($compl = null){
 
     return $protocol.$hostname.$port.$compl;
 }
-
-function appName(){
-    return "SLIM Base";
-}
 //----------------------------------------------------------------------------------------------------------------------
 
 $app = require __DIR__ . '/../src/bootstrap.php';
@@ -57,5 +53,6 @@ $app->run();
 //https://github.com/bryanjhv/slim-session
 //SLIMBORN
 //https://startbootstrap.com/themes/freelancer/
+//http://github.com/slimphp/Slim-Skeleton"
 
 //$conn->getParams()
