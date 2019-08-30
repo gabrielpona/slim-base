@@ -51,7 +51,7 @@ class AuthController
 
     public function postSignOut($request, $response)
     {
-        $this->authHelper->logout();
+        $this->authHelper->logout($this->container->view);
         return $response->withRedirect($this->router->pathFor('home'));
     }
 
@@ -67,7 +67,7 @@ class AuthController
         $senha = $request->getParam('senha');
         $usuario = $this->usuarioDao->findByLogin($login);
 
-        $auth = $this->authHelper->attempt($login,$senha,$usuario);
+        $auth = $this->authHelper->attempt($senha,$usuario,$this->container->view);
 
         if (! $auth) {
             $this->flash->addMessage('error', 'Beh! Could not sign you in with those details');

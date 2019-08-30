@@ -9,6 +9,9 @@
 namespace App\Helper;
 
 
+use App\Entity\Usuario;
+use Doctrine\ORM\Mapping\Entity;
+
 class AuthHelper
 {
     public function __construct()
@@ -22,7 +25,7 @@ class AuthHelper
         return isset($_SESSION['usuario']);
     }
 
-    public function attempt($login, $password,$usuario)
+    public function attempt($password,$usuario,$view)
     {
 
         $crypt = new CryptUtil(getenv("APP_KEY"));
@@ -40,7 +43,7 @@ class AuthHelper
 
     }
 
-    public function logout()
+    public function logout($view)
     {
         unset($_SESSION['usuario']);
     }

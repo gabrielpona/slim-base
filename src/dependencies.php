@@ -61,9 +61,12 @@ return function (App $app) {
         $view->offsetSet("slim_environment",getenv('SLIM_ENVIRONMENT'));
         $view->offsetSet("app_name",getenv('APP_NAME'));
         $view->offsetSet("app_version",getenv('APP_VERSION'));
+        //$view->offsetSet('xablau','xablau');
 
         if(isset($_SESSION['usuario'])){
-            $view->offsetSet('usuario',$_SESSION['usuario']);
+            $view->offsetSet('userSession',$_SESSION['usuario']);
+        }else{
+            $view->offsetSet('userSession',new \App\Entity\Usuario());
         }
         return $view;
     };

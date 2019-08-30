@@ -20,6 +20,8 @@ class PainelController
 
 
     public function getIndex($request, $response, $args){
+
+        //return var_dump($this->container->view);
         return $this->container->view->render($response,'painel.index.twig');
     }
 

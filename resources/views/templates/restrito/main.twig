@@ -9,15 +9,15 @@
       {% include 'templates/restrito/includes/top-menu.twig' %}
 
 
-      {% if usuario.perfil.slug == "SYSADMIN" %}
+      {% if userSession.perfil.slug == "SYSADMIN" %}
 
         {% include 'templates/restrito/includes/left-sidebar-sysadmin.twig' %}
 
-      {% elseif usuario.perfil.slug == "ADMINISTRATIVO" %}
+      {% elseif userSession.perfil.slug == "ADMINISTRATIVO" %}
 
         {% include 'templates/restrito/includes/left-sidebar-administrativo.twig' %}
 
-      {% elseif usuario.perfil.slug == "GESTOR" %}
+      {% elseif userSession.perfil.slug == "GESTOR" %}
 
         {% include 'templates/restrito/includes/left-sidebar-gestor.twig' %}
 
@@ -42,6 +42,7 @@
             {% endblock %}
           </div>
           <div class="clearfix"></div>
+          <span></span>
         </section>
 
         <!-- Main content -->
@@ -80,7 +81,7 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Ambiente: {{ slim_environment }} | Perfil: {{ usuario.perfil.nome }}
+      Ambiente: {{ slim_environment }} | Perfil: {{ userSession.perfil.nome }}
     </div>
     <!-- Default to the left -->
     <span>Versão: {{ app_version }}</span>
