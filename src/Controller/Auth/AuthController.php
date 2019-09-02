@@ -5,7 +5,7 @@ namespace App\Controller\Auth;
 use App\Entity\User;
 use App\Helper\AuthHelper;
 use App\Helper\CryptUtil;
-use App\Resource\UsuarioDao;
+use App\Dao\UsuarioDao;
 
 class AuthController
 {

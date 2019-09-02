@@ -30,6 +30,12 @@ class Usuario extends AbstractEntity
      */
     private $perfil;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Unidade",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true,referencedColumnName="id")
+     */
+    private $unidade;
+
     /** @ORM\Column(type="boolean", length=100) **/
     private $ativo;
 
@@ -93,6 +99,24 @@ class Usuario extends AbstractEntity
     {
         $this->perfil = $perfil;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUnidade()
+    {
+        return $this->unidade;
+    }
+
+    /**
+     * @param mixed $unidade
+     */
+    public function setUnidade($unidade): void
+    {
+        $this->unidade = $unidade;
+    }
+
+
 
     /**
      * @return mixed

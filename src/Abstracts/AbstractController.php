@@ -5,14 +5,8 @@ abstract class AbstractController
 {
 
     protected $container;
-    protected $dao;
 
-    public function __construct($container,AbstractDao $dao) {
+    public function __construct($container) {
         $this->container = $container;
-        $this->dao = $dao;
     }
-
-
-
-
 }

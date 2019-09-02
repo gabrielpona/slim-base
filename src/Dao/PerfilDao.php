@@ -6,7 +6,7 @@
  * Time: 10:04
  */
 
-namespace App\Resource;
+namespace App\Dao;
 
 
 use App\Abstracts\AbstractDao;

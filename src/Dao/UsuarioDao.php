@@ -1,5 +1,5 @@
 <?php
-namespace App\Resource;
+namespace App\Dao;
 
 use App\Abstracts\AbstractDao;
 use App\Entity\Usuario as Entity;

@@ -6,18 +6,14 @@
  * Time: 09:32
  */
 
-namespace App\Controller\restricted;
+namespace App\Controller;
 
 
 use App\Abstracts\AbstractController;
-use App\Entity\Perfil;
 use App\Entity\Usuario;
 use App\Helper\CryptUtil;
-use App\Helper\Datatables\DataTables;
-use App\Resource\PerfilDao;
-use App\Resource\UsuarioDao;
-use App\Transients\DataTables\DtUsuario;
-
+use App\Dao\PerfilDao;
+use App\Dao\UsuarioDao;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,31 +21,28 @@ class UsuarioController extends AbstractController
 {
 
 
+    private $usuarioDao;
     private $perfilDao;
 
     public function __construct($container)
     {
-        parent::__construct($container,new UsuarioDao($container->get('em')));
+        parent::__construct($container);
+        $this->usuarioDao = new UsuarioDao($container->get('em'));
         $this->perfilDao = new PerfilDao($container->get('em'));
     }
 
     public function getList($request, $response, $args){
 
-
-        $list = $this->dao->listAll();
-
+        $list = $this->usuarioDao->listAll();
         $data = ['usuarioList' => $list];
-
         return $this->container->view->render($response,'usuario.list.twig',$data);
     }
-
 
 
     public function getCreate($request,$response,$args){
 
         $perfilList = $this->perfilDao->listAll();
         $data['perfilList'] = $perfilList;
-
         return $this->container->view->render($response,'usuario.create.twig',$data);
     }
 
@@ -69,7 +62,7 @@ class UsuarioController extends AbstractController
                     throw new \Exception("Usuário inválido.");
 
                 }else{
-                    $usuario = $this->dao->findById($id);
+                    $usuario = $this->usuarioDao->findById($id);
                 }
             }
 
@@ -96,10 +89,9 @@ class UsuarioController extends AbstractController
         $usuario = new Usuario();
 
         try{
-
             $id = $request->getParam('usuario_id');
 
-            $usuario = $this->dao->findById($id,false);
+            $usuario = $this->usuarioDao->findById($id,false);
             $usuario->setNome($request->getParam('usuario_nome'));
             $usuario->setEmail($request->getParam('usuario_email'));
             $usuario->setAtivo((boolean)$request->getParam('usuario_ativo'));
@@ -110,7 +102,7 @@ class UsuarioController extends AbstractController
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
             $usuario->setPerfil($perfil);
 
-            $this->dao->updateEntity($usuario);
+            $this->usuarioDao->updateEntity($usuario);
 
             $this->container['flash']->addMessage('info', 'Usuário atualizado com sucesso.');
             return $response->withRedirect($this->container->router->pathFor('usuario.list'));
@@ -142,7 +134,7 @@ class UsuarioController extends AbstractController
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
             $usuario->setPerfil($perfil);
 
-            $this->dao->createEntity($usuario);
+            $this->usuarioDao->createEntity($usuario);
 
             $this->container['flash']->addMessage('info', 'Usuário adicionado com sucesso.');
             return $response->withRedirect($this->container->router->pathFor('usuario.list'));
@@ -166,7 +158,7 @@ class UsuarioController extends AbstractController
             $currPwd = $cryptUtil->encrypt($currPwd);
             $newPwd = $cryptUtil->encrypt($newPwd);
 
-            $this->dao->changePassword($usrId,$currPwd,$newPwd);
+            $this->usuarioDao->changePassword($usrId,$currPwd,$newPwd);
 
             $this->container['flash']->addMessage('info', 'Senha alterada. Reinicie a sessão para que as alterações tenham efeito.');
         }catch(\Exception $e){
@@ -191,7 +183,7 @@ class UsuarioController extends AbstractController
 
 
             //(DtUsuario $dtUsuario,$search,$start,$length,$orderColumn,$orderDirection)
-            $datatables = $this->dao->listDtJson($search,$start,$length,$orderColumn,$orderDirection);
+            $datatables = $this->usuarioDao->listDtJson($search,$start,$length,$orderColumn,$orderDirection);
             $datatables->setDraw($draw);
             //return $response->withJson($datatables);
             return $response->withJson($datatables->__toArray());

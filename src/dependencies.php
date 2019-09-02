@@ -110,21 +110,25 @@ return function (App $app) {
     */
 
     $container['AuthController'] = function ($c) {
-        $userResource = new \App\Resource\UsuarioDao($c->get('em'));
+        $userResource = new \App\Dao\UsuarioDao($c->get('em'));
         return new Controller\Auth\AuthController($c,$userResource);
     };
 
     $container['HomeController'] = function ($c) {
-        $fotoResource = new \App\Resource\FotoDao($c->get('em'));
+        $fotoResource = new \App\Dao\FotoDao($c->get('em'));
         return new Controller\HomeController($c,$fotoResource);
     };
 
     $container['PainelController'] = function ($c) {
-        return new Controller\restricted\PainelController($c);
+        return new Controller\PainelController($c);
+    };
+
+    $container['UnidadeController'] = function($c){
+        return new Controller\UnidadeController($c);
     };
 
     $container['UsuarioController'] = function ($c) {
-        return new Controller\restricted\UsuarioController($c);
+        return new Controller\UsuarioController($c);
     };
 
 };

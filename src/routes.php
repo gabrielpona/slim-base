@@ -44,6 +44,8 @@ return function (App $app) {
         $this->get('/usuario/edit/{id}', 'UsuarioController:getEdit')->setName('usuario.edit');
         $this->post('/usuario/update', 'UsuarioController:postEdit')->setName('usuario.update');
         $this->post('/usuario/password-change', 'UsuarioController:postPwdChange')->setName('usuario.pwd.change');
+
+        $this->get('/unidade/list', 'UnidadeController:getList')->setName('unidade.list');
     })->add(new Middleware\AuthMiddleware($container));
 
 

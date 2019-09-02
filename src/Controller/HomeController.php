@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use App\Resource\FotoDao;
+use App\Dao\FotoDao;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 /**

@@ -6,7 +6,7 @@
  * Time: 16:07
  */
 
-namespace App\Controller\restricted;
+namespace App\Controller;
 
 
 class PainelController
