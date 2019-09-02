@@ -52,7 +52,7 @@ return function (App $app) {
     //Authenticated JSON Routes
     $app->group('/json', function () {
         $this->post('/usuario/list', 'UsuarioController:postDtJson')->setName('usuario.list.json');
-        $this->post('/usuario/teste', 'UsuarioController:postTeste')->setName('usuario.teste.json');
+        $this->post('/unidade/list', 'UnidadeController:postDtJson')->setName('unidade.list.json');
     })->add(new Middleware\AuthMiddleware($container));
 
 

@@ -4,7 +4,6 @@ namespace App\Dao;
 use App\Abstracts\AbstractDao;
 use App\Entity\Usuario as Entity;
 use App\Helper\Datatables\DataTablesHelper;
-use PHPUnit\Util\Exception;
 
 
 class UsuarioDao extends AbstractDao

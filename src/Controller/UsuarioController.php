@@ -20,7 +20,6 @@ use Psr\Http\Message\ResponseInterface;
 class UsuarioController extends AbstractController
 {
 
-
     private $usuarioDao;
     private $perfilDao;
 
