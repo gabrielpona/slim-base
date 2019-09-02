@@ -32,9 +32,7 @@ class UsuarioController extends AbstractController
 
     public function getList($request, $response, $args){
 
-        $list = $this->usuarioDao->listAll();
-        $data = ['usuarioList' => $list];
-        return $this->container->view->render($response,'usuario.list.twig',$data);
+        return $this->container->view->render($response,'usuario.list.twig',array());
     }
 
 
@@ -180,9 +178,13 @@ class UsuarioController extends AbstractController
             $orderDirection = $pb['order'][0]['dir'];
             $search = $pb['search']['value'];
 
+            $unidadeId = 0;
+            if(isset($_SESSION['usuario']['unidade']['id'])){
+                $unidadeId = $_SESSION['usuario']['unidade']['id'];
+            }
 
             //(DtUsuario $dtUsuario,$search,$start,$length,$orderColumn,$orderDirection)
-            $datatables = $this->usuarioDao->listDtJson($search,$start,$length,$orderColumn,$orderDirection);
+            $datatables = $this->usuarioDao->listDtJson($search,$start,$length,$orderColumn,$orderDirection,$unidadeId);
             $datatables->setDraw($draw);
             //return $response->withJson($datatables);
             return $response->withJson($datatables->__toArray());

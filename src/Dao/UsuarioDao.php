@@ -62,13 +62,15 @@ class UsuarioDao extends AbstractDao
 
     public function findByLogin($login, $array = true)
     {
-        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
         $user = $this->repo->findOneBy(['login'=>$login]);
 
         if ($array and $user){
-            $perfil = $user->getPerfil()->__toArray();
+            $perfil = $user->getPerfil()!=null?$user->getPerfil()->__toArray():array();
+            $unidade = $user->getUnidade()!=null?$user->getUnidade()->__toArray():array();
             $user = $user->__toArray();
+
             $user['perfil'] = $perfil;
+            $user['unidade'] = $unidade;
 
         }
 
@@ -89,7 +91,7 @@ class UsuarioDao extends AbstractDao
     }
 
 
-    public function listDtJson($search,$start,$length,$orderColumn,$orderDirection){
+    public function listDtJson($search,$start,$length,$orderColumn,$orderDirection,$unidadeId){
 
         $conn = $this->entityManager->getConnection();
 
@@ -108,11 +110,12 @@ class UsuarioDao extends AbstractDao
         $sql .="  u.nome, ";
         $sql .="  u.login, ";
         $sql .="  u.email, ";
-        $sql .="  p.nome as 'perfil' ";
+        $sql .="  p.nome as 'perfil', ";
+        $sql .="  un.sigla as 'unidade' ";
         $sql .=" FROM ";
         $sql .="  usuario u ";
-        $sql .=" INNER JOIN perfil p ";
-        $sql .=" ON u.perfil_id = p.id ";
+        $sql .=" INNER JOIN perfil p ON u.perfil_id = p.id ";
+        $sql .=" LEFT JOIN unidade un  ON u.unidade_id = un.id ";
         $sql .=" WHERE 1=1 ";
 
 
@@ -122,7 +125,15 @@ class UsuarioDao extends AbstractDao
             $sql.=" OR upper(u.login) like '%".$search."%' ";
             $sql.=" OR upper(u.email) like '%".$search."%' ";
             $sql.=" OR upper(p.nome) like  '%".$search."%' ";
+            $sql.=" OR upper(un.sigla) like  '%".$search."%' ";
+            $sql.=" OR upper(un.nome) like  '%".$search."%' ";
         }
+
+
+        if($unidadeId>0){
+            $sql.=" AND un.id = ".$unidadeId;
+        }
+
 
         $sql .=" ORDER BY  ".($orderColumn+1)." ".$orderDirection;
 
