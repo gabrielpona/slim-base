@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Abstracts\AbstractController;
 
 use App\Dao\UnidadeDao;
+use App\Entity\Unidade;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -23,6 +24,90 @@ class UnidadeController extends AbstractController
     }
 
 
+    public function getCreate($request,$response,$args){
+        return $this->container->view->render($response,'pages/unidade/create.twig',array());
+    }
+
+    public function getEdit($request,$response,$args){
+
+        $route = $request->getAttribute('route');
+        $id = $route->getArgument('id');
+
+        try{
+
+            if(isset($args['unidade'])){
+                $unidade = $args['unidade'];
+
+            }else{
+                if($id ==null || !is_numeric($id)|| $id<=0 ) {
+                    throw new \Exception("Unidade inválida.");
+
+                }else{
+                    $unidade = $this->unidadeDao->findById($id);
+                }
+            }
+
+            if($unidade==null)
+                throw new \Exception("Unidade não encontrada.");
+
+            $data['unidade'] = $unidade;
+            $data['id'] = 0;
+
+            return $this->container->view->render($response,'pages/unidade/edit.twig',$data);
+
+        }catch (\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->container->router->pathFor('unidade.list'));
+        }
+
+    }
+
+
+    public function postCreate($request,$response,$args){
+
+        try{
+
+            $unidade = new Unidade();
+            $unidade->setNome($request->getParam('unidade_nome'));
+            $unidade->setSigla($request->getParam('unidade_sigla'));
+
+            $this->unidadeDao->createEntity($unidade);
+
+            $this->container['flash']->addMessage('info', 'Unidade adicionada com sucesso.');
+            return $response->withRedirect($this->container->router->pathFor('unidade.list'));
+
+        }catch(\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->container->router->pathFor('unidade.create'));
+        }
+
+    }
+
+    public function postEdit($request,$response,$args){
+
+        $id = 0;
+        $unidade = new Unidade();
+
+        try{
+            $id = $request->getParam('unidade_id');
+
+            $unidade = $this->unidadeDao->findById($id,false);
+            $unidade->setNome($request->getParam('unidade_nome'));
+            $unidade->setSigla($request->getParam('unidade_sigla'));
+
+            $this->unidadeDao->updateEntity($unidade);
+
+            $this->container['flash']->addMessage('info', 'Unidade atualizada com sucesso.');
+            return $response->withRedirect($this->container->router->pathFor('unidade.list'));
+
+        }catch(\Exception $e){
+            $this->container['flash']->addMessage('error', $e->getMessage());
+            return $response->withRedirect($this->getEdit($request,$response,array('id'=>$id,'unidade'=>$unidade)))
+                ->withStatus(302)
+                ->withoutHeader('Location');
+        }
+
+    }
 
     public function postDtJson(ServerRequestInterface $request, ResponseInterface $response){
         try{
@@ -47,19 +132,7 @@ class UnidadeController extends AbstractController
             return $response->withJson($e,$e->getCode());
         }
 
-        /*
-         * try {
-            Long associacaoId = 0L;
-            if(userSession.getUsuario().isAssociacao()){
-                associacaoId = userSession.getUsuario().getAssociacao().getId();
-            }
-            DataTables<DtUsuario> dataTables = usuarioDao.listJson(dtUsuario, associacaoId,start, length, orderColumn, orderDirection);
-            dataTables.setDraw(draw);
-            result.use(Results.json()).withoutRoot().from(dataTables).include("data").serialize();
-        } catch (Exception e) {
-            JsonUtils.setErrorJsonResult(result, e);
-        }
-         */
+
     }
 
 }

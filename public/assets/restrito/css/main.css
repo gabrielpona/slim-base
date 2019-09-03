@@ -12,3 +12,8 @@
 .context-menu-item:not(.context-menu-icon) .fa { color: #2980b9; }
 .context-menu-item:not(.context-menu-icon).context-menu-hover .fa { color: #ffffff; }
 .context-menu-item.context-menu-icon--fa span { margin-left: 16px; line-height: 1.42857143; }
+
+.form-group-sm.required .control-label:after {
+    content:" *";
+    color:red;
+}

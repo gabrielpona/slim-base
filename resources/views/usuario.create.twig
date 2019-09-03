@@ -15,13 +15,13 @@
                 <div class="box-body">
                     <form role="form" method="POST" action="{{path_for('usuario.add')}}" enctype="multipart/form-data" class="form-usuario-add">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group-sm required">
                                 <label class="small control-label" for="nome">Nome</label>
                                 <input type="text" class="form-control no-caps" id="nome" name="usuario.nome" value="" required>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group-sm required">
                                 <label class="small control-label" for="email">E-mail</label>
                                 <input type="email" class="form-control no-caps" id="email" name="usuario.email" value=""required>
@@ -56,11 +56,22 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group-sm required">
-                                <label class="small control-label" for="papel">Papel</label>
+                                <label class="small control-label" for="papel">Perfil</label>
                                 <select name="usuario.perfil.id" class="form-control select2" id="perfil" required>
                                     <option value="-1" selected disabled style="font-style: italic;">Selecione...</option>
                                     {% for perfil in perfilList %}
                                         <option value="{{ perfil.id }}" >{{ perfil.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" id="div-unidade" style="display: none;">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="papel">Unidade</label>
+                                <select name="usuario.unidade.id" class="form-control select2" id="unidade">
+                                    <option value="-1" selected disabled style="font-style: italic;">Selecione...</option>
+                                    {% for unidade in unidadeList %}
+                                        <option value="{{ unidade.id }}" >{{ unidade.nome }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -84,25 +95,25 @@
 {% block local_script %}
     <script type="text/javascript">
         $(document).ready(function(){
+            $perfil = $('#perfil');
+            $unidade = $('#unidade');
+            $divUnidade = $('#div-unidade');
 
 
-            /*
-            var $tb = $('#dt-usuarios');
+            var alternaCampos = function(){
+                var perfilId = $perfil.find('option:selected').val();
 
-            var $grid = $tb.DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "",
-                    "type": "POST"
-                },
-                "columns": [
-                    { "data": "login" },
-                    { "data": "perfil" }
-                ],
-                "order": [ 1, "asc" ]
-            });
-            */
+                if(perfilId==1){//SYSADMIN
+                    $divUnidade.hide();
+                    $unidade.find('option').attr("selected",false);
+                    $unidade.find('first').attr("selected","selected");
+                    $unidade.val(-1);
+                }else{
+                    $divUnidade.show();
+                }
+            };
+
+            $perfil.on('change',alternaCampos);
 
         });
     </script>

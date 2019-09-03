@@ -66,6 +66,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-3" id="div-unidade" style="display: none;">
+                            <div class="form-group-sm required">
+                                <label class="small control-label" for="papel">Unidade</label>
+                                <select name="usuario.unidade.id" class="form-control select2" id="unidade">
+                                    <option value="-1" {{ usuario.unidade.id>0?'':'selected'}} disabled style="font-style: italic;">Selecione...</option>
+                                    {% for unidade in unidadeList %}
+                                        <option value="{{ unidade.id }}" {{ (unidade.id == usuario.unidade.id) ? 'selected' : '' }} >{{ unidade.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <br>
                     <div class="row">
@@ -85,25 +96,25 @@
 {% block local_script %}
     <script type="text/javascript">
         $(document).ready(function(){
+            $perfil = $('#perfil');
+            $unidade = $('#unidade');
+            $divUnidade = $('#div-unidade');
 
 
-            /*
-            var $tb = $('#dt-usuarios');
+            var alternaCampos = function(){
+                var perfilId = $perfil.find('option:selected').val();
 
-            var $grid = $tb.DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "",
-                    "type": "POST"
-                },
-                "columns": [
-                    { "data": "login" },
-                    { "data": "perfil" }
-                ],
-                "order": [ 1, "asc" ]
-            });
-            */
+                if(perfilId==1){//SYSADMIN
+                    $divUnidade.hide();
+                    $unidade.find('option').attr("selected",false);
+                    $unidade.find('first').attr("selected","selected");
+                    $unidade.val(-1);
+                }else{
+                    $divUnidade.show();
+                }
+            };
+
+            $perfil.on('change',alternaCampos).trigger('change');
 
         });
     </script>

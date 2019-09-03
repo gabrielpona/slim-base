@@ -9,6 +9,7 @@
 namespace App\Dao;
 
 use App\Abstracts\AbstractDao;
+use App\Abstracts\AbstractEntity;
 use App\Helper\Datatables\DataTablesHelper;
 
 
@@ -20,6 +21,33 @@ class UnidadeDao extends AbstractDao
     {
         parent::__construct($entityManager);
         $this->repo = $this->entityManager->getRepository('App\Entity\Unidade');
+    }
+
+    public function listAll(){
+        return $this->repo->findAll();
+    }
+
+
+    public function createEntity(AbstractEntity $unidade)
+    {
+        $this->entityManager->persist($unidade);
+        return $this->entityManager->flush();
+    }
+
+    public function updateEntity(AbstractEntity $usuario)
+    {
+        $this->entityManager->merge($usuario);
+        return $this->entityManager->flush();
+    }
+
+    public function findById($id, $array = true)
+    {
+        $user = $this->repo->findOneBy(['id'=>$id]);
+
+        if ($array and $user)
+            $user = $user->__toArray();
+
+        return $user;
     }
 
     public function listDtJson($search,$start,$length,$orderColumn,$orderDirection){

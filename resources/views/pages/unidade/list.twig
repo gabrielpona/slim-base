@@ -6,7 +6,7 @@
     listagem
 {% endblock %}
 {% block local_controls %}
-    <a href="{{path_for('usuario.create')}}" class="btn btn-info btn-sm btn-flat">Criar nova</a>
+    <a href="{{path_for('unidade.create')}}" class="btn btn-info btn-sm btn-flat">Criar nova</a>
 {% endblock %}
 {% block content %}
     <div class="row">
@@ -55,7 +55,7 @@
                         disabled: false,
                         callback: function (key, opt) {
                             var id = opt.$trigger.parents('tr').attr('id');
-                            window.location.href = (Main.Util.getBaseUrl("/painel/usuario/edit/" + id));
+                            window.location.href = (Main.Util.getBaseUrl("/painel/unidade/edit/" + id));
                         }
                     }
                 }

@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Abstracts\AbstractController;
+use App\Dao\UnidadeDao;
 use App\Entity\Usuario;
 use App\Helper\CryptUtil;
 use App\Dao\PerfilDao;
@@ -22,12 +23,14 @@ class UsuarioController extends AbstractController
 
     private $usuarioDao;
     private $perfilDao;
+    private $unidadeDao;
 
     public function __construct($container)
     {
         parent::__construct($container);
         $this->usuarioDao = new UsuarioDao($container->get('em'));
         $this->perfilDao = new PerfilDao($container->get('em'));
+        $this->unidadeDao = new UnidadeDao(($container->get('em')));
     }
 
     public function getList($request, $response, $args){
@@ -39,7 +42,9 @@ class UsuarioController extends AbstractController
     public function getCreate($request,$response,$args){
 
         $perfilList = $this->perfilDao->listAll();
+        $unidadeList = $this->unidadeDao->listAll();
         $data['perfilList'] = $perfilList;
+        $data['unidadeList'] = $unidadeList;
         return $this->container->view->render($response,'usuario.create.twig',$data);
     }
 
@@ -69,7 +74,9 @@ class UsuarioController extends AbstractController
             $data['usuario'] = $usuario;
 
             $perfilList = $this->perfilDao->listAll();
+            $unidadeList = $this->unidadeDao->listAll();
             $data['perfilList'] = $perfilList;
+            $data['unidadeList'] = $unidadeList;
 
             return $this->container->view->render($response,'usuario.edit.twig',$data);
 
@@ -98,6 +105,16 @@ class UsuarioController extends AbstractController
             //TODO: Any Doctrine turnaround?
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
             $usuario->setPerfil($perfil);
+
+
+            if($request->getParam('usuario_unidade_id')>0){
+                $unidadeId = $usuario->getUnidade()!=null? $usuario->getUnidade()->getId():null;
+                if($request->getParam('usuario_unidade_id')!=$unidadeId){
+                    $usuario->setUnidade($this->unidadeDao->findById($request->getParam('usuario_unidade_id'),false));
+                }
+            }else{
+                $usuario->setUnidade(null);
+            }
 
             $this->usuarioDao->updateEntity($usuario);
 
@@ -130,6 +147,10 @@ class UsuarioController extends AbstractController
             //TODO: Realmente necessário popular o objeto desta maneira?
             $perfil = $this->perfilDao->findById((integer)$request->getParam('usuario_perfil_id'),false);
             $usuario->setPerfil($perfil);
+
+            if($request->getParam('usuario_unidade_id')>0){
+                $usuario->setUnidade($this->unidadeDao->findById($request->getParam('usuario_unidade_id'),false));
+            }
 
             $this->usuarioDao->createEntity($usuario);
 

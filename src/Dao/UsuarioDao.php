@@ -28,7 +28,6 @@ class UsuarioDao extends AbstractDao
     public function createEntity(Entity $usuario)
     {
 
-
         //var_dump($usuario);
         $this->entityManager->persist($usuario);
         return $this->entityManager->flush();

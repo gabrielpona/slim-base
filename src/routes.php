@@ -46,6 +46,10 @@ return function (App $app) {
         $this->post('/usuario/password-change', 'UsuarioController:postPwdChange')->setName('usuario.pwd.change');
 
         $this->get('/unidade/list', 'UnidadeController:getList')->setName('unidade.list');
+        $this->get('/unidade/create', 'UnidadeController:getCreate')->setName('unidade.create');
+        $this->post('/unidade/add', 'UnidadeController:postCreate')->setName('unidade.add');
+        $this->get('/unidade/edit/{id}', 'UnidadeController:getEdit')->setName('unidade.edit');
+        $this->post('/unidade/update', 'UnidadeController:postEdit')->setName('unidade.update');
     })->add(new Middleware\AuthMiddleware($container));
 
 
