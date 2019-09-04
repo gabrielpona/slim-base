@@ -35,7 +35,7 @@ class UsuarioController extends AbstractController
 
     public function getList($request, $response, $args){
 
-        return $this->container->view->render($response,'usuario.list.twig',array());
+        return $this->container->view->render($response,'pages/usuario/list.twig',array());
     }
 
 
@@ -45,7 +45,7 @@ class UsuarioController extends AbstractController
         $unidadeList = $this->unidadeDao->listAll();
         $data['perfilList'] = $perfilList;
         $data['unidadeList'] = $unidadeList;
-        return $this->container->view->render($response,'usuario.create.twig',$data);
+        return $this->container->view->render($response,'pages/usuario/create.twig',$data);
     }
 
     public function getEdit($request,$response,$args){
@@ -78,7 +78,7 @@ class UsuarioController extends AbstractController
             $data['perfilList'] = $perfilList;
             $data['unidadeList'] = $unidadeList;
 
-            return $this->container->view->render($response,'usuario.edit.twig',$data);
+            return $this->container->view->render($response,'pages/usuario/edit.twig',$data);
 
         }catch (\Exception $e){
             $this->container['flash']->addMessage('error', $e->getMessage());
@@ -189,7 +189,6 @@ class UsuarioController extends AbstractController
     public function postDtJson(ServerRequestInterface $request, ResponseInterface $response){
         try{
 
-
             $pb = $request->getParsedBody();
 
             $draw = $pb['draw'];
@@ -214,19 +213,6 @@ class UsuarioController extends AbstractController
             return $response->withJson($e,$e->getCode());
         }
 
-        /*
-         * try {
-            Long associacaoId = 0L;
-            if(userSession.getUsuario().isAssociacao()){
-                associacaoId = userSession.getUsuario().getAssociacao().getId();
-            }
-            DataTables<DtUsuario> dataTables = usuarioDao.listJson(dtUsuario, associacaoId,start, length, orderColumn, orderDirection);
-            dataTables.setDraw(draw);
-            result.use(Results.json()).withoutRoot().from(dataTables).include("data").serialize();
-        } catch (Exception e) {
-            JsonUtils.setErrorJsonResult(result, e);
-        }
-         */
     }
 
 

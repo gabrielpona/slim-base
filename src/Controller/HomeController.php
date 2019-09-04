@@ -48,7 +48,7 @@ final class HomeController {
         $foto = $this->fotoResource->findByid(1);
         //var_dump($foto);
         //var_dump($_SESSION['user']);
-        return $this->container->view->render($response,'home.index2.twig');
+        return $this->container->view->render($response,'pages/home/index.twig');
     }
 
 }

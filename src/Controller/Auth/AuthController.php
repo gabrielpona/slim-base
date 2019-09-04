@@ -57,7 +57,7 @@ class AuthController
 
     public function getSignIn($request, $response)
     {
-        return $this->container->view->render($response,'auth.signin.twig');
+        return $this->container->view->render($response,'pages/auth/signin.twig');
     }
 
     public function postSignIn($request, $response)

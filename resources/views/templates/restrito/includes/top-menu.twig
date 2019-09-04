@@ -40,15 +40,15 @@
                     <!-- The user image in the navbar-->
                     <img src="{{base_url()}}/assets/restrito/img/default_user.gif" class="user-image" alt="Imagem do usuário"/>
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                    <span class="hidden-xs">{{ usuario.login }}</span>
+                    <span class="hidden-xs">{{ userSession.login }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="{{base_url()}}/assets/restrito/img/default_user.gif" class="img-circle" alt="Imagem do usuário" />
                             <p>
-                                {{ usuario.nome }}
-                                <small>{{ usuario.perfil.nome }}</small>
+                                {{ userSession.nome }}
+                                <small>{{ userSession.perfil.nome }}</small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
