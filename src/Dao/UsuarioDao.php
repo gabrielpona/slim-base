@@ -2,86 +2,28 @@
 namespace App\Dao;
 
 use App\Abstracts\AbstractDao;
-use App\Entity\Usuario as Entity;
 use App\Helper\Datatables\DataTablesHelper;
-
 
 class UsuarioDao extends AbstractDao
 {
 
-    private $repo;
-
     public function __construct($entityManager)
     {
-        parent::__construct($entityManager);
-        $this->repo = $this->entityManager->getRepository('App\Entity\Usuario');
+        parent::__construct($entityManager,'App\Entity\Usuario');
     }
-
-
-    public function create(array $data)
-    {
-        $user = new Entity($data);
-        $this->entityManager->persist($user);
-        return $this->entityManager->flush();
-    }
-
-    public function createEntity(Entity $usuario)
-    {
-        $this->entityManager->persist($usuario);
-        return $this->entityManager->flush();
-    }
-
-    public function updateEntity(Entity $user)
-    {
-        $this->entityManager->merge($user);
-        return $this->entityManager->flush();
-    }
-
-    public function delete(Entity $user){
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
-    }
-
-
-    public function listAll(){
-        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
-        return $this->repo->findAll();
-    }
-
-
-    public function findById($id, $array = true)
-    {
-        $user = null;
-        try{
-            $user = $this->repo->findOneBy(['id'=>$id]);
-
-            if ($array and $user)
-                $user = $user->__toArray();
-
-        }catch(\Exception $e){
-
-        }
-        return $user;
-    }
-
 
     public function findByLogin($login, $array = true)
     {
-        $user = $this->repo->findOneBy(['login'=>$login]);
-
+        $user = $this->repository->findOneBy(['login'=>$login]);
         if ($array and $user){
             $perfil = $user->getPerfil()!=null?$user->getPerfil()->__toArray():array();
             $unidade = $user->getUnidade()!=null?$user->getUnidade()->__toArray():array();
             $user = $user->__toArray();
-
             $user['perfil'] = $perfil;
             $user['unidade'] = $unidade;
-
         }
-
         return $user;
     }
-
 
     public function changePassword($userId,$oldPwd,$newPwd) {
 
@@ -94,7 +36,6 @@ class UsuarioDao extends AbstractDao
         }
         return $this->entityManager->flush();
     }
-
 
     public function listDtJson($search,$start,$length,$orderColumn,$orderDirection,$unidadeId){
 
@@ -123,7 +64,6 @@ class UsuarioDao extends AbstractDao
         $sql .=" LEFT JOIN unidade un  ON u.unidade_id = un.id ";
         $sql .=" WHERE 1=1 ";
 
-
         if(!empty($search)){
 
             $sql.=" AND upper(u.nome) like '%".$search."%' ";
@@ -134,11 +74,9 @@ class UsuarioDao extends AbstractDao
             $sql.=" OR upper(un.nome) like  '%".$search."%' ";
         }
 
-
         if($unidadeId>0){
             $sql.=" AND un.id = ".$unidadeId;
         }
-
 
         $sql .=" ORDER BY  ".($orderColumn+1)." ".$orderDirection;
 
@@ -150,6 +88,5 @@ class UsuarioDao extends AbstractDao
         return $datatables;
 
     }
-
 
 }
