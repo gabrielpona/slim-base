@@ -34,10 +34,17 @@ class UnidadeDao extends AbstractDao
         return $this->entityManager->flush();
     }
 
-    public function updateEntity(AbstractEntity $usuario)
+    public function updateEntity(AbstractEntity $unidade)
     {
-        $this->entityManager->merge($usuario);
+        $this->entityManager->merge($unidade);
         return $this->entityManager->flush();
+    }
+
+    public function delete(AbstractEntity $unidade){
+
+        $this->entityManager->remove($unidade);
+        $this->entityManager->flush();
+
     }
 
     public function findById($id, $array = true)

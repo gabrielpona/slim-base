@@ -77,6 +77,25 @@
         </section><!-- /.content -->
       </div>
     </div>
+  <div class="modal fade" id="modal-error" >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close xbtn" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h3 class="modal-title">Ocorreu um erro!</h3>
+        </div>
+        <div class="modal-body">
+          <span><strong>Message: </strong><span id="error-message" style="text-decoration: underline"></span></span><br>
+          <span><strong>StackTrace: </strong><span id="error-stacktrace"></span></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-flat btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
   <footer class="main-footer">
     <!-- To the right -->
@@ -107,6 +126,7 @@
 <script src="{{base_url()}}/assets/restrito/vendor/datatables/jquery.dataTables.moment.js"></script>
 <script src="{{base_url()}}/assets/restrito/vendor/jQuery-contextMenu/jquery.contextMenu.min.js"></script>
 <script src="{{base_url()}}/assets/restrito/vendor/jQuery-contextMenu/jquery.ui.position.min.js"></script>
+<script src="{{base_url()}}/assets/restrito/vendor/pace/pace.js"></script>
 
 <script src="{{base_url()}}/assets/common/js/main-util.js"></script>
 <script src="{{base_url()}}/assets/common/js/main-sync.js"></script>

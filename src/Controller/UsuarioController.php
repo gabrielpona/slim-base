@@ -131,6 +131,43 @@ class UsuarioController extends AbstractController
 
     }
 
+
+    public function postRemoveJson($request,$response,$args){
+        try{
+            $usuarioId = $request->getParam('id');
+
+            $unidadeId = 0;
+
+            if(isset($_SESSION['usuario']['unidade']['id'])){
+                $unidadeId = $_SESSION['usuario']['unidade']['id'];
+            }
+
+            $usuarioId = $_SESSION['usuario']['id'];
+            $usuario =$this->usuarioDao->findById($usuarioId,false);
+
+            if($usuario!=null){
+
+                if($unidadeId>0){
+                    if($usuario->getUnidade()!=null && $usuario->getUnidade()->getId()!=$unidadeId){
+                        throw new \Exception("Acesso Negado.");
+                    }
+                }
+                if($usuario->getId()==$usuarioId){
+                    throw new \Exception("Não é possível excluir o próprio usuário.");
+                }
+                $this->usuarioDao->delete($usuario);
+
+            }else{
+                throw new \Exception("Usuário não localizado.");
+            }
+            return $response->withJson("Usuário Removido.");
+        }catch (\Exception $e){
+            return $response->withStatus(500)
+                ->withHeader('Content-Type', 'text/html')
+                ->write($e->getMessage());
+        }
+    }
+
     public function postCreate($request,$response,$args){
 
         try{

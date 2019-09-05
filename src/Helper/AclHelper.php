@@ -22,7 +22,8 @@ class AclHelper
     {
         $this->acl = [
             'protected'=>['SYSADMIN'],
-            'usuario.list'=>['SYSADMIN','GESTOR']
+            'usuario.list'=>['SYSADMIN','GESTOR'],
+            'usuario.remove.json' => ['SYSADMIN','GESTOR']
         ];
     }
 

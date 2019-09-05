@@ -63,6 +63,35 @@
                             var id = opt.$trigger.parents('tr').attr('id');
                             window.location.href = (Main.Util.getBaseUrl("/painel/usuario/edit/" + id));
                         }
+                    },remove: {
+                        name: "Remover",
+                        icon: "fa-trash",
+                        disabled: false,
+                        callback: function (key, opt) {
+                            var id = opt.$trigger.parents('tr').attr('id');
+                            var nomeUsuario = opt.$trigger.parent().find('td:eq(0)').text();
+                            if(confirm('Tem certeza de que deseja remover o usuário ' + nomeUsuario + '?')) {
+                                Pace.track(function(){
+                                    $.ajax({
+                                        type: 'post',
+                                        url: "{{ path_for('usuario.remove.json') }}",
+                                        data:{
+                                            id:id
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            alert(data);
+                                            //toastr.success(data);
+                                            $grid.ajax.reload(null, false);
+                                        },
+                                        error: function(data) {
+                                            Main.Util.alertDataError(this.url, data);
+                                        }
+                                    });
+                                });
+
+                            }
+                        }
                     }
                 }
             };

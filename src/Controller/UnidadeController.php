@@ -62,6 +62,29 @@ class UnidadeController extends AbstractController
 
     }
 
+    public function postRemoveJson($request,$response,$args){
+
+        $id = $request->getParam('id');
+        $unidade = null;
+
+        try{
+
+            $unidade =$this->unidadeDao->findById($id,false);
+
+            if($unidade!=null){
+                $this->unidadeDao->delete($unidade);
+            }else{
+                throw new \Exception("Unidade não localizada.");
+            }
+            return $response->withJson("Usuário Removido.");
+
+        }catch (\Exception $e){
+            return $response->withStatus(500)
+                ->withHeader('Content-Type', 'text/html')
+                ->write($e->getMessage());
+        }
+    }
+
 
     public function postCreate($request,$response,$args){
 

@@ -27,17 +27,19 @@ class UsuarioDao extends AbstractDao
 
     public function createEntity(Entity $usuario)
     {
-
-        //var_dump($usuario);
         $this->entityManager->persist($usuario);
         return $this->entityManager->flush();
     }
 
-    public function updateEntity(Entity $usuario)
+    public function updateEntity(Entity $user)
     {
-        //var_dump($usuario);
-        $this->entityManager->merge($usuario);
+        $this->entityManager->merge($user);
         return $this->entityManager->flush();
+    }
+
+    public function delete(Entity $user){
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
     }
 
 
@@ -49,12 +51,16 @@ class UsuarioDao extends AbstractDao
 
     public function findById($id, $array = true)
     {
-        //$repo = $this->entityManager->getRepository('App\Entity\Usuario');
-        $user = $this->repo->findOneBy(['id'=>$id]);
+        $user = null;
+        try{
+            $user = $this->repo->findOneBy(['id'=>$id]);
 
-        if ($array and $user)
-            $user = $user->__toArray();
+            if ($array and $user)
+                $user = $user->__toArray();
 
+        }catch(\Exception $e){
+
+        }
         return $user;
     }
 

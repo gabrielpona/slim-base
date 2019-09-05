@@ -57,6 +57,9 @@ return function (App $app) {
     $app->group('/json', function () {
         $this->post('/usuario/list', 'UsuarioController:postDtJson')->setName('usuario.list.json');
         $this->post('/unidade/list', 'UnidadeController:postDtJson')->setName('unidade.list.json');
+
+        $this->post('/usuario/remove','UsuarioController:postRemoveJson')->setName('usuario.remove.json');
+        $this->post('/unidade/remove','UnidadeController:postRemoveJson')->setName('unidade.remove.json');
     })->add(new Middleware\AuthMiddleware($container));
 
 
