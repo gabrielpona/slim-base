@@ -17,10 +17,10 @@ class AuthController
     private $authHelper;
 
 
-    public function __construct($container, UsuarioDao $usuarioDao)
+    public function __construct($container)
     {
         $this->container = $container;
-        $this->usuarioDao = $usuarioDao;
+        $this->usuarioDao = new UsuarioDao($container->get('em'));
         $this->authHelper = new AuthHelper();
     }
 

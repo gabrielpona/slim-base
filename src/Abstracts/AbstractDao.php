@@ -3,9 +3,7 @@ namespace App\Abstracts;
 
 abstract class AbstractDao
 {
-
     protected $entityManager;
-
     protected $repository;
 
     /**

@@ -22,19 +22,6 @@ return function (App $app) {
         return $logger;
     };
 
-
-
-    /*
-    // Register Blade View helper
-    $container['view'] = function ($c) {
-        $settings = $c->get('settings');
-        return new \Slim\Views\Blade(
-            $settings['renderer']['blade_template_path'],
-            $settings['renderer']['blade_cache_path']
-        );
-    };
-    */
-
     //Register Twig Helper
     $container['view'] = function ($container) {
         $settings = $container->get('settings')['twig'];
@@ -57,7 +44,6 @@ return function (App $app) {
 
         $view->getEnvironment()->addGlobal('flash', $container->flash);
 
-
         $view->offsetSet("slim_environment",getenv('SLIM_ENVIRONMENT'));
         $view->offsetSet("app_name",getenv('APP_NAME'));
         $view->offsetSet("app_version",getenv('APP_VERSION'));
@@ -70,7 +56,6 @@ return function (App $app) {
         }
         return $view;
     };
-
 
     // Doctrine
     $container['em'] = function ($c) {
@@ -87,8 +72,6 @@ return function (App $app) {
         return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
     };
 
-
-
     $container['auth'] = function($c) {
         //$userResource = new \App\Resource\UsuarioDao($c->get('em'));
         //return new \App\Controller\Auth\AuthController($c,$userResource);
@@ -103,20 +86,13 @@ return function (App $app) {
     // Controller factories
     // -----------------------------------------------------------------------------
 
-    /*
-    $container['App\Controller\HomeController'] = function ($c) {
-        return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
-    };
-    */
 
     $container['AuthController'] = function ($c) {
-        $userResource = new \App\Dao\UsuarioDao($c->get('em'));
-        return new Controller\Auth\AuthController($c,$userResource);
+        return new Controller\Auth\AuthController($c);
     };
 
     $container['HomeController'] = function ($c) {
-        $fotoResource = new \App\Dao\FotoDao($c->get('em'));
-        return new Controller\HomeController($c,$fotoResource);
+        return new Controller\HomeController($c);
     };
 
     $container['PainelController'] = function ($c) {

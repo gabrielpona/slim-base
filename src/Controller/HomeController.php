@@ -21,16 +21,13 @@ final class HomeController {
      * @var object s
      */
     protected $container;
-    private $fotoResource;
-
 
     /**
      * Método Construtor
      * @param ContainerInterface $container
      */
-    public function __construct($container, FotoDao $fotoResource) {
+    public function __construct($container) {
         $this->container = $container;
-        $this->fotoResource = $fotoResource;
     }
 
     /**
@@ -42,12 +39,7 @@ final class HomeController {
      * @return void Response
      */
     public function index($request, $response, $args) {
-        //$data = ['subscriber' => 'teste'];
-        //return $this->container->view->render($response, 'home.index', $data);
 
-        $foto = $this->fotoResource->findByid(1);
-        //var_dump($foto);
-        //var_dump($_SESSION['user']);
         return $this->container->view->render($response,'pages/home/index.twig');
     }
 
